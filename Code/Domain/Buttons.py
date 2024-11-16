@@ -1,7 +1,8 @@
 import pygame
+from Code.Domain.Entity import Entity
 
-class Button:
-    def __init__(self, screen, color, x, y, length, width, text=None, text_color=(0, 0, 0), font_size=20, shadow_opacity=128):
+class Button(Entity):
+    def __init__(self, id, screen, color, x, y, length, width, text=None, text_color=(0, 0, 0), font_size=20, shadow_opacity=128):
         """
         Initialize a button with text centered on it and a semi-transparent shadow.
 
@@ -16,6 +17,7 @@ class Button:
         :param font_size: The font size for the text (default: 20).
         :param shadow_opacity: Opacity of the shadow (0 to 255, 255 being fully opaque).
         """
+        self.id = id
         self.color = color
         self.length = length
         self.width = width
@@ -44,9 +46,13 @@ class Button:
 
         # Draw the button rectangle
         pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.length, self.width))
-
+        self.rect = pygame.rect.Rect(self.x, self.y, self.length, self.width)
         # If text is provided, render and center it
         if self.text:
             text_surface = self.font.render(self.text, True, self.text_color)
             text_rect = text_surface.get_rect(center=(self.x + self.length // 2, self.y + self.width // 2))
             self.screen.blit(text_surface, text_rect)
+
+    def is_pressed(self, mouse_pos):
+        """Check if the button is pressed by the mouse."""
+        return self.rect.collidepoint(mouse_pos)
