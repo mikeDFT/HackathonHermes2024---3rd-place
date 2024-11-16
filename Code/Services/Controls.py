@@ -1,9 +1,11 @@
 from Code.Services import EventsHandler
+from Code.Domain import Player
 import pygame
 
 class Controls:
 	def __init__(self, eventsHandler: EventsHandler):
 		self.__eventsHandler = eventsHandler
+		self.__player = None
 		
 		self.__controls = {
 			"W": {
@@ -51,19 +53,35 @@ class Controls:
 					"Args": controls["ArgsUp"]
 				})
 			
-			
+	def passPlayer(self, player: Player):
+		self.__player = player
 			
 	def __checkKey(self, keyLetter: str, keyState: str, func, args):
 		func(*args)
 				
 	def __jump(self):
+		if not self.__player:
+			return
+		
 		print("Jump")
+		self.__player.velocity_y = self.__player.jump_strength
 		
 	def __moveLeft(self):
+		if not self.__player:
+			return
+		
 		print("Move left")
 	
 	def __moveRight(self):
+		if not self.__player:
+			return
+		
 		print("Move right")
 		
 	def __stopMove(self):
+		if not self.__player:
+			return
+		
 		print("Stop move")
+		
+	

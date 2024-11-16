@@ -23,34 +23,47 @@ class Player:
         self.velocity_y = 0  # Vertical velocity (up/down movement)
         self.speed = 5  # Speed of player movement
         self.gravity = 1  # Gravity constant for falling
+        self.x_drag = 1  # like gravity but on the X axis
         self.jump_strength = -15  # Jump strength (negative to go up)
         self.on_ground = False  # To check if player is standing on the ground
+
 
     def render(self):
         """Draw the player on the screen."""
         pygame.draw.rect(self.screen, self.color, self.rect)
+
 
     def apply_gravity(self):
         """Apply gravity to the player, causing them to fall when not on the ground."""
         if not self.on_ground:
             self.velocity_y += self.gravity  # Apply gravity to vertical velocity
 
-    def move(self, keys):
-        """Move the player based on keyboard input (left, right, jumping)."""
-        if keys[pygame.K_LEFT]:
-            self.velocity_x = -self.speed  # Move left
-        elif keys[pygame.K_RIGHT]:
-            self.velocity_x = self.speed  # Move right
-        else:
-            self.velocity_x = 0  # Stop horizontal movement
 
-        if keys[pygame.K_SPACE] and self.on_ground:
-            self.velocity_y = self.jump_strength  # Jump when space is pressed and player is on the ground
+    # def move(self, keys):
+    #     """Move the player based on keyboard input (left, right, jumping)."""
+    #     if keys[pygame.K_LEFT]:
+    #         self.velocity_x = -self.speed  # Move left
+    #     elif keys[pygame.K_RIGHT]:
+    #         self.velocity_x = self.speed  # Move right
+    #     else:
+    #         self.velocity_x = 0  # Stop horizontal movement
+    #
+    #     if keys[pygame.K_SPACE] and self.on_ground:
+    #         self.velocity_y = self.jump_strength  # Jump when space is pressed and player is on the ground
 
-    def update(self):
+
+    def update(self, timeDelta):
+        print(timeDelta)
         """Update the player's position and handle collisions with platforms."""
-        self.rect.x += self.velocity_x  # Update horizontal position
-        self.rect.y += self.velocity_y  # Update vertical position
+        self.x += self.velocity_x*(timeDelta/100)  # Update horizontal position
+        self.y += self.velocity_y*(timeDelta/100)  # Update vertical position
+        
+        self.rect.x = self.x
+        self.rect.y = self.y
+        
+        self.velocity_y -= self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
+        self.velocity_x -= self.x_drag*(timeDelta / 100)  # Apply gravity to vertical velocity
+        
 
     def handle_collisions(self, platforms):
         """Check for collisions with platforms and stop falling."""

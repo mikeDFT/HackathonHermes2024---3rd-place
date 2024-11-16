@@ -3,17 +3,19 @@ from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
 from Code.Domain.Platform import Platform
 from Code.Services import MainServices
-from Code.Domain.Player import Player  # Import Player class
-
+from Code.Domain.Player import Player
 
 class GUI:
     def __init__(self):
         pygame.init()
+        self.lastTick = 0
         self.mainServices = MainServices.MainServices()
         self.running = True
         self.current_screen = "menu"  # Start in the menu screen
         self.setup_screen()
-        self.player = None  # Initialize player variable (will be created in game mode)
+        self.player = None
+        
+
 
     def render_map(self):
         """
@@ -36,9 +38,13 @@ class GUI:
             # Render platforms
             for platform in platforms:
                 platform.render()
+            
+            currTick = pygame.time.get_ticks()
+            deltaTime = currTick - self.lastTick
+            self.lastTick = currTick
 
             # Handle and render the player
-            self.player.update()  # Update the player's position
+            self.player.update(deltaTime)  # Update the player's position
             self.player.handle_collisions(platforms)  # Check collisions with platforms
             self.player.render()  # Draw the player on the screen
 
@@ -67,6 +73,7 @@ class GUI:
                     self.current_screen = "game"
                     # Initialize the player when entering the game
                     self.player = Player(self.screen, 200, 150)  # You can adjust player start position
+                    self.mainServices.passPlayer(self.player)
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
                     print("Settings button clicked!")
