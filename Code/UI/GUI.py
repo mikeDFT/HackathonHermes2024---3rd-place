@@ -94,8 +94,10 @@ class GUI:
 
         self.connectEvents()
 
+
     def quit(self):
         self.running = False
+
 
     def handleButtonClickMenus(self, objects):
         mouse_pos = pygame.mouse.get_pos()
