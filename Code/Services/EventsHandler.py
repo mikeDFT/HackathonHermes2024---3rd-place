@@ -22,6 +22,7 @@ class EventsHandler:
 		# 	"ID": 123,  # ID=-1 is for events that won't ever be unbinded
 		# 	"Type": pygame.MOUSEBUTTONDOWN,
 		# 	"Func": self.__clickedButton,
+		#	"EventKey": pygame.K_W,
 		# 	"Args": [button.x, button.y, button.width, button.height, func, extraArgsClick]
 		# }
 		
@@ -39,7 +40,7 @@ class EventsHandler:
 	def __handleEvents(self):
 		for event in pygame.event.get():
 			for eventFunction in self.__Events:
-				if ("State" not in eventFunction or eventFunction["State"] == self.__state) and eventFunction["Type"] == event.type:
+				if ("EventKey" not in eventFunction or eventFunction["EventKey"] == event.key) ("State" not in eventFunction or eventFunction["State"] == self.__state) and eventFunction["Type"] == event.type:
 					eventFunction["Func"](*eventFunction["Args"])
 					
 
