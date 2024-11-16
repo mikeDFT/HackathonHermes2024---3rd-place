@@ -15,16 +15,22 @@ class Networking:
 		self.__thread = threading.Thread(target=self.__listen)
 		self.__thread.start()
 		
-		
+	
+	def send(self, data: str):
+		self.__socket.sendto(data.encode(), (self.__otherIP, self.__otherPort))
+	
 	
 	def __listen(self):
 		while True:
-			self.__socket.
+			self.send("Testing " + self.__localIP)
 			data = self.__socket.recv(1024)
-			print(data)
+			print(data.decode())
 	
 	
 	def refresh(self):
+		pass
 	
 	
+def __main__():
+	networking = Networking("", 1234, "", 1234)
 	
