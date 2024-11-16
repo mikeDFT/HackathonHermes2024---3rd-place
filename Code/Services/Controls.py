@@ -46,7 +46,7 @@ class Controls:
 					# "State": "MainMenu", # no state => always
 					"ID": ID,  # ID=-1 is for events that won't ever be unbinded
 					"Type": pygame.KEYUP,
-					"Func": controls["FuncDown"],
+					"Func": controls["FuncUp"],
 					"EventKey": controls["EventKey"],
 					"Args": controls["ArgsUp"]
 				})
