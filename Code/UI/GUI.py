@@ -2,11 +2,14 @@ import pygame
 from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
 
+from Code.Services import EventsHandler, Controls, Networking, MainServices
+
 class GUI:
     def __init__(self):
         pygame.init()
         self.running = True
-        self.current_screen = "game"  # Start in the menu screen
+        self.current_screen = "menu"  # Start in the menu screen
+        self.mainServices = MainServices.MainServices()
         self.setup_screen()
 
     def render_map(self):
