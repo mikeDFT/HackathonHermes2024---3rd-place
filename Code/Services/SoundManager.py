@@ -1,9 +1,13 @@
 import pygame
+import os
 
-
-class SoundManager:
-    def __init__(self, soundsPath: str = "Sounds/"):
+class SoundMan:
+    def __init__(self, soundsPath: str = None):
         pygame.mixer.init()
+
+        # Determine the path for sounds relative to this script's directory if not specified
+        if soundsPath is None:
+            soundsPath = os.path.join(os.path.dirname(__file__), "Sounds/")
 
         # Global volume scale for all sounds
         soundScale = 1
@@ -74,7 +78,5 @@ class SoundError(Exception):
 
     def __str__(self):
         return "[SoundError]: " + str(self.message)
-
-
 
 
