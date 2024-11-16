@@ -85,6 +85,7 @@ class Controls:
 		self.__player.velocity_x = self.__player.speed
 		print("Move right")
 		
+		
 	def __stopMove(self):
 		if not self.__player:
 			return
