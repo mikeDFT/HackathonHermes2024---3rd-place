@@ -35,6 +35,9 @@ class GUI:
                 Platform(self.screen, 300, 100)
             ]
 
+            for i in range(self.player.getHealth()):
+                pygame.draw.circle(self.screen, (220,20,60), (i*50 + 50, 50), 25)
+
             # Render platforms
             for platform in platforms:
                 platform.render()
@@ -44,10 +47,9 @@ class GUI:
             self.lastTick = currTick
 
             # Handle and render the player
-            self.player.handle_collisions(platforms)  # Check collisions with platforms
             self.player.update(deltaTime)  # Update the player's position
+            self.player.handle_collisions(platforms)  # Check collisions with platforms
             self.player.render()  # Draw the player on the screen
-
 
     def setup_screen(self):
         """
@@ -73,7 +75,7 @@ class GUI:
                     # Switch to the game screen when PLAY is clicked
                     self.current_screen = "game"
                     # Initialize the player when entering the game
-                    self.player = Player(self.screen, 200, 150)  # You can adjust player start position
+                    self.player = Player(self.screen, 50, 150)  # You can adjust player start position
                     self.mainServices.passPlayer(self.player)
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
