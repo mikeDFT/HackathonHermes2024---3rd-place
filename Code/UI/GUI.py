@@ -15,7 +15,6 @@ class GUI:
         self.width = 1200
         self.height = 700
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.current_screen = "menu"  # Start in the menu screen
         self.setup_screen()
         self.player = None
         self.otherPlayer = None
@@ -26,7 +25,7 @@ class GUI:
         Render the game map. This could be an image, objects, or any game elements.
         Here we render a simple placeholder for the map.
         """
-        if self.current_screen == "game":
+        if self.mainServices.eventsHandler.getState() == "Game":
             self.screen.fill((135, 206, 235))  # Sky-blue background for the game map
 
             # Create platforms
@@ -43,7 +42,7 @@ class GUI:
             ]
 
             if self.player.getHealth() == 0:
-                self.current_screen = "game_over"
+                self.mainServices.eventsHandler.changeState("GameOver")
 
             for i in range(self.player.getHealth()):
                 pygame.draw.circle(self.screen, (220, 20, 60), (i * 50 + 50, 50), 25)
@@ -69,15 +68,6 @@ class GUI:
             # if self.otherPlayer:
             #     self.otherPlayer.render()
 
-    def render_game_over(self):
-        if self.current_screen == "game_over":
-            self.screen.fill((171, 186, 124))  # Background color for the menu
-            return_button = Button("RETURN", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 300, 250, 100, "RETURN",
-                                   font_size=40)
-            title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 100)
-            self.objects = [return_button, title]
-            return_button.render()
-            title.render()
 
     def setup_screen(self):
         """
@@ -88,13 +78,25 @@ class GUI:
         settings_button = Button("SETTINGS", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 450, 250, 100, "SETTINGS",
                                  font_size=40)
         title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 100)
-        self.objects = [play_button, settings_button, title]
-        self.connectEvents(self.objects)
+        self.mainMenuObjects = [play_button, settings_button, title]
+        
+        
+        self.screen.fill((171, 186, 124))  # Background color for the menu
+        return_button = Button("RETURN", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 300, 250, 100, "RETURN",
+                               font_size=40)
+        title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 100)
+        self.objects = [return_button, title]
+        return_button.render()
+        title.render()
+        
+        self.gameOverObjects = [return_button]
+        
+        self.connectEvents()
 
     def quit(self):
         self.running = False
 
-    def handleButtonClick(self, objects):
+    def handleButtonClickMainMenu(self, objects):
         mouse_pos = pygame.mouse.get_pos()
         for obj in objects:
             if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
@@ -118,10 +120,21 @@ class GUI:
                     print("Settings button clicked!")
                 elif obj.getId() == "RETURN":
                     # Switch back to the main menu when RETURN is clicked
-                    self.current_screen = "menu"
+                    self.mainServices.eventsHandler.changeState("MainMenu")
                     self.setup_screen()  # Reset the menu screen
 
-    def connectEvents(self, objects):
+
+    def handleButtonClickGameOver(self, objects):
+        mouse_pos = pygame.mouse.get_pos()
+        for obj in objects:
+            if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
+                if obj.getId() == "RETURN":
+                    # Switch back to the main menu when RETURN is clicked
+                    self.current_screen = "menu"
+                    self.setup_screen()
+
+
+    def connectEvents(self):
         # quit
         self.mainServices.eventsHandler.connectEvent({
             "ID": 1,
@@ -136,22 +149,33 @@ class GUI:
             "ID": 2,
             "Type": pygame.MOUSEBUTTONDOWN,
             "State": "MainMenu",
-            "Func": self.handleButtonClick,
-            "Args": [objects]
+            "Func": self.handleButtonClickMainMenu,
+            "Args": [self.mainMenuObjects]
+        })
+        
+        # button click events
+        self.mainServices.eventsHandler.connectEvent({
+            "ID": 2,
+            "Type": pygame.MOUSEBUTTONDOWN,
+            "State": "MainMenu",
+            "Func": self.handleButtonClickGameOver,
+            "Args": [self.gameOverObjects]
         })
 
         while self.running:
             self.mainServices.refresh()
 
+            state = self.mainServices.eventsHandler.getState()
+            
             # Clear the screen based on current screen state
-            if self.current_screen == "menu":
+            if state == "MainMenu":
                 self.screen.fill((171, 186, 124))  # Menu background color
                 for obj in self.objects:
                     obj.render()
-            elif self.current_screen == "game":
+            elif state == "Game":
                 self.render_map()  # Render the game map when in the game screen
-            elif self.current_screen == "game_over":
-                self.render_game_over()  # Render the game over screen
+            elif state== "GameOver":
+                pass #self.render_game_over()  # Render the game over screen
 
             # Update the display
             pygame.display.flip()

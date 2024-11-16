@@ -5,7 +5,7 @@ from Code.Repository import Repo
 class EventsHandler:
 	def __init__(self):
 		self.__Events = []
-		self.__state = "MainMenu"
+		self.__state = "MainMenu" # "MainMenu", "Game", "GameOver"
 		self.__repo = Repo.Repo()
 	
 	
