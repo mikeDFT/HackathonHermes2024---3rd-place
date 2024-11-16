@@ -51,6 +51,7 @@ class GUI:
             self.player.update(deltaTime, self.mainServices.networking.send)  # Update the player's position
             self.player.handle_collisions(platforms)  # Check collisions with platforms
             self.player.render()  # Draw the player on the screen
+            self.otherPlayer.render()
 
     def setup_screen(self):
         """

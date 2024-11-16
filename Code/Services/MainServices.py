@@ -7,7 +7,7 @@ class MainServices:
 	def __init__(self):
 		self.eventsHandler = EventsHandler.EventsHandler()
 		self.controls = Controls.Controls(eventsHandler=self.eventsHandler)
-		self.networking = Networking.Networking("localhost", 1234, "192.168.35.244", 1234)
+		self.networking = Networking.Networking("192.168.35.243", 1234, "192.168.35.244", 1234)
 		
 		# self.refresh()
 		# self.__thread = threading.Thread(target=self.refresh)

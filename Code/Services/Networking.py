@@ -5,6 +5,7 @@ from Code.Domain.Player import Player
 
 class Networking:
 	def __init__(self, localIP, localPort, otherIP, otherPort):
+		print("Networking: ", localIP, localPort, otherIP, otherPort)
 		self.__otherIP = otherIP
 		self.__otherPort = otherPort
 		self.__localIP = localIP
@@ -38,8 +39,10 @@ class Networking:
 			
 			if not self.otherPlayer:
 				continue
-				
-			self.otherPlayer.x, self.otherPlayer.y = data.split(",")
+			
+			otherPlayerX, otherPlayerY = data.split(",")
+			self.otherPlayer.rect.x = float(otherPlayerX)
+			self.otherPlayer.rect.y = float(otherPlayerY)
 			
 	
 	
@@ -48,5 +51,5 @@ class Networking:
 	
 	
 
-if __name__ == "__main__":
-	networking = Networking("192.168.35.243", 1234, "192.168.35.244", 1234)
+# if __name__ == "__main__":
+# 	networking = Networking("192.168.35.243", 1234, "192.168.35.244", 1234)
