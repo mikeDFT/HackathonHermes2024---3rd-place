@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from Code.Services import SoundManager
 sound_manager = SoundManager.SoundMan()
@@ -30,7 +32,7 @@ class Player:
         self.jump_strength = -15  # Jump strength (negative to go up)
         self.on_ground = 0  # To check if player is standing on the ground
         self.life = 3
-        self.pushStrength = 30
+        self.pushStrength = 50
         self.pushedVelocity = 0
 
 
@@ -107,12 +109,13 @@ class Player:
     def handle_otherPlayer_collisions(self, otherPlayer):
         """Check for collisions with other player and stop falling."""
         if self.rect.colliderect(otherPlayer.rect):
+            rndVelo = random.randint(self.pushStrength*90, self.pushStrength*110)/100
             if self.rect.x < otherPlayer.rect.x:
-                self.pushedVelocity = -self.pushStrength
+                self.pushedVelocity = -rndVelo
             else:
-                self.pushedVelocity = self.pushStrength
+                self.pushedVelocity = rndVelo
             
-            self.velocity_y = -self.pushStrength/4
+            self.velocity_y = -rndVelo/4
             
 
     def getHealth(self):
