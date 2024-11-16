@@ -4,7 +4,6 @@ class Player:
     def __init__(self, screen, x, y, width=50, height=50, color=(255, 0, 0)):
         """
         Initialize the player.
-
         :param screen: The Pygame surface where the player will be rendered.
         :param x: The x-coordinate of the player.
         :param y: The y-coordinate of the player.
@@ -28,8 +27,7 @@ class Player:
         self.terminalVelo = 10  # Terminal velocity for falling
         self.x_drag = 1  # like gravity but on the X axis
         self.jump_strength = -15  # Jump strength (negative to go up)
-        self.on_ground = False  # To check if player is standing on the ground
-        self.on_ceiling = False  # To check if player is standing on the ceiling
+        self.on_ground = 0  # To check if player is standing on the ground
         self.life = 3
 
 
@@ -57,7 +55,7 @@ class Player:
     #         self.velocity_y = self.jump_strength  # Jump when space is pressed and player is on the ground
 
 
-    def update(self, timeDelta, networkSend):
+    def update(self, timeDelta):
         """Update the player's position and handle collisions with platforms."""
         self.oldX = self.x
         self.oldY = self.y
@@ -68,8 +66,6 @@ class Player:
         self.rect.x = self.x
         self.rect.y = self.y
         
-        networkSend(str(self.x) + "," + str(self.y))
-
         self.velocity_y += self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
         self.velocity_y = min(self.terminalVelo, self.velocity_y)  # Limit falling speed
 
@@ -91,15 +87,14 @@ class Player:
 
     def handle_collisions(self, platforms):
         """Check for collisions with platforms and stop falling."""
-        self.on_ground = False  # Assume player is not on the ground
-        self.on_ceiling = False  # Assume player is not on the ceiling
+        self.on_ground = 0  # Assume player is not on the ground
         
         for platform in platforms:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
                 if self.oldY < platform.rect.y:
-                    self.rect.bottom = platform.rect.top+5  # Place player on top of platform
-                    self.on_ground = True  # Player is on the ground
+                    self.rect.bottom = platform.rect.top  # Place player on top of platform
+                    self.on_ground = pygame.time.get_ticks()  # Player is on the ground
                     self.velocity_y = 0
                 elif self.oldY > platform.rect.y:
                     self.rect.top = platform.rect.bottom+2  # Place player below platform

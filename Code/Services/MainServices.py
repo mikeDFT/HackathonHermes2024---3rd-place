@@ -14,9 +14,7 @@ class MainServices:
 		# self.__thread.start()
 		
 	def refresh(self):
-		# self.__controls.refresh()
 		self.eventsHandler.refresh()
-		self.networking.refresh()
 		
 	
 	def passPlayer(self, player):

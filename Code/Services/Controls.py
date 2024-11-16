@@ -2,6 +2,8 @@ from Code.Services import EventsHandler
 from Code.Domain import Player
 import pygame
 
+
+
 class Controls:
 	def __init__(self, eventsHandler: EventsHandler):
 		self.__eventsHandler = eventsHandler
@@ -63,7 +65,7 @@ class Controls:
 			
 	def passPlayer(self, player: Player):
 		self.__player = player
-			
+
 	def __checkKey(self, keyLetter: str, keyState: str, func, args):
 		func(*args)
 		
@@ -84,18 +86,16 @@ class Controls:
 		if not self.__player:
 			return
 		
-		if not self.__player.on_ground and not self.__player.on_ceiling:
+		print(pygame.time.get_ticks() - self.__player.on_ground)
+		if pygame.time.get_ticks() - self.__player.on_ground > 4000:
 			return
 		
-		print("Jump")
+		self.__player.rect.y -= 10
+		self.__player.on_ground = 0
 		
-		if self.__player.on_ceiling:
-			self.__player.velocity_y = self.__player.jump_strength*10
-			self.__player.on_ceiling = False
-		else:
-			self.__player.velocity_y = self.__player.jump_strength
-			self.__player.on_ground = False
-			
+		print("Jump")
+		self.__player.velocity_y = self.__player.jump_strength
+		
 		
 	def __moveLeft(self):
 		if not self.__player:

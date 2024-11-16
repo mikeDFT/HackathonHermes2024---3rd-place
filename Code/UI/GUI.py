@@ -28,7 +28,7 @@ class GUI:
 
             # Create platforms
             platforms = [
-                Platform(self.screen, 50, 700),
+                Platform(self.screen, 50, 600),
                 Platform(self.screen, 50, 500),
                 Platform(self.screen, 50, 300),
                 Platform(self.screen, 300, 500),
@@ -48,8 +48,11 @@ class GUI:
             self.lastTick = currTick
 
             # Handle and render the player
-            self.player.update(deltaTime, self.mainServices.networking.send)  # Update the player's position
+            self.player.update(deltaTime)  # Update the player's position
             self.player.handle_collisions(platforms)  # Check collisions with platforms
+            # self.mainServices.refresh()
+            self.mainServices.networking.send(str(self.player.rect.x) + "," + str(self.player.rect.y))
+            
             self.player.render()  # Draw the player on the screen
             self.otherPlayer.render()
 
@@ -57,7 +60,8 @@ class GUI:
         """
         Setup the screen with the menu, including buttons and title.
         """
-        self.screen = pygame.display.set_mode((500, 800))
+        self.screenSizes = (1200, 700)
+        self.screen = pygame.display.set_mode(self.screenSizes)
         self.screen.fill((171, 186, 124))  # Background color for the menu
         play_button = Button("PLAY", self.screen, (61, 83, 0), 500 / 2 - 250 / 2, 300, 250, 100, "PLAY", font_size=40)
         settings_button = Button("SETTINGS", self.screen, (61, 83, 0), 500 / 2 - 250 / 2, 450, 250, 100, "SETTINGS",
@@ -106,8 +110,6 @@ class GUI:
         })
 
         while self.running:
-            self.mainServices.refresh()
-
             # Clear the screen based on current screen state
             if self.current_screen == "menu":
                 self.screen.fill((171, 186, 124))  # Menu background color
@@ -115,6 +117,7 @@ class GUI:
                     obj.render()
             else:
                 self.render_map()  # Render the game map when in the game screen
+            self.mainServices.refresh()
 
             # Update the display
             pygame.display.flip()

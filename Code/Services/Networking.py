@@ -23,6 +23,7 @@ class Networking:
 	def passOtherPlayer(self, player: Player):
 		self.otherPlayer = player
 	
+	
 	def send(self, data: str):
 		self.__socket.sendto(data.encode(), (self.__otherIP, self.__otherPort))
 	
@@ -35,7 +36,7 @@ class Networking:
 	def __listen(self):
 		while True:
 			data, addr = self.recieve()
-			print(f"Recieved: {data} from {addr}")
+			# print(f"Recieved: {data} from {addr}")
 			
 			if not self.otherPlayer:
 				continue
@@ -45,9 +46,6 @@ class Networking:
 			self.otherPlayer.rect.y = float(otherPlayerY)
 			
 	
-	
-	def refresh(self):
-		pass
 	
 	
 
