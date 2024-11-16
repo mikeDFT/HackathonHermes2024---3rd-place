@@ -67,9 +67,6 @@ class Controls:
 			
 	def passPlayer(self, player: Player):
 		self.__player = player
-
-	def __checkKey(self, keyLetter: str, keyState: str, func, args):
-		func(*args)
 		
 	
 	def __move(self):
