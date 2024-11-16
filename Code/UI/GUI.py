@@ -1,16 +1,19 @@
 import pygame
 from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
+from Code.Domain.Platform import Platform
 
-from Code.Services import EventsHandler, Controls, Networking, MainServices
 
 class GUI:
     def __init__(self):
         pygame.init()
         self.running = True
         self.current_screen = "menu"  # Start in the menu screen
-        self.mainServices = MainServices.MainServices()
         self.setup_screen()
+        self.player = pygame.Rect(200, 400, 50, 50)  # Starting position of the player
+        self.player_velocity = 0  # Vertical velocity for jumping
+        self.gravity = 1  # Simple gravity effect
+        self.on_ground = False  # Check if player is on the ground
 
     def render_map(self):
         """
@@ -18,10 +21,20 @@ class GUI:
         Here we render a simple placeholder for the map.
         """
         if self.current_screen == "game":
-            self.screen.fill((0, 128, 0))  # Green background for the game map
-            font = pygame.font.Font(None, 36)
-            text = font.render("This is the Game Map", True, (255, 255, 255))
-            self.screen.blit(text, (150, 100))  # Draw some text on the map
+            self.screen.fill((135, 206, 235))  # Sky-blue background for the game map
+
+            # Create platforms
+            platforms = [
+                Platform(self.screen, 100, 500),
+                Platform(self.screen, 100, 400),
+                Platform(self.screen, 100, 300)
+            ]
+
+            # Render platforms
+            for platform in platforms:
+                platform.render()
+
+
 
     def setup_screen(self):
         """
@@ -30,7 +43,8 @@ class GUI:
         self.screen = pygame.display.set_mode((500, 800))
         self.screen.fill((171, 186, 124))  # Background color for the menu
         play_button = Button("PLAY", self.screen, (61, 83, 0), 500 / 2 - 250 / 2, 300, 250, 100, "PLAY", font_size=40)
-        settings_button = Button("SETTINGS", self.screen, (61, 83, 0), 500 / 2 - 250 / 2, 450, 250, 100, "SETTINGS", font_size=40)
+        settings_button = Button("SETTINGS", self.screen, (61, 83, 0), 500 / 2 - 250 / 2, 450, 250, 100, "SETTINGS",
+                                 font_size=40)
         title = Title("TITLE", self.screen, "Jocul Nostru", 245, 100)
         self.objects = [play_button, settings_button, title]
         self.game_loop(self.objects)
@@ -66,6 +80,7 @@ class GUI:
             pygame.display.flip()
 
         pygame.quit()
+
 
 if __name__ == "__main__":
     gui = GUI()
