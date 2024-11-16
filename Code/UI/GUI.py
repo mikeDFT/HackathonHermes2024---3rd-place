@@ -92,22 +92,18 @@ class GUI:
     def quit(self):
         self.running = False
 
-    def handleButtonClickMainMenu(self, objects):
+    def handleButtonClickMenus(self, objects):
         mouse_pos = pygame.mouse.get_pos()
         for obj in objects:
             if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
                 if obj.getId() == "PLAY":
                     # Switch to the game screen when PLAY is clicked
-                    self.current_screen = "game"
                     self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
                     self.player = Player(self.screen, 50, 150)  # You can adjust player start position
                     self.otherPlayer = Player(self.screen, 50, 150)
-
-                    self.otherPlayer = Player(self.screen, 300, 150)
-
-                    self.mainServices.passPlayer(self.player)
-                    self.mainServices.passOtherPlayer(self.otherPlayer)
+                    self.otherPlayer.color = (255, 0, 0)
+                    self.otherPlayer.rect.x = 100000
 
                     self.mainServices.passPlayer(self.player)
                     self.mainServices.passOtherPlayer(self.otherPlayer)
@@ -117,17 +113,7 @@ class GUI:
                 elif obj.getId() == "RETURN":
                     # Switch back to the main menu when RETURN is clicked
                     self.mainServices.eventsHandler.changeState("MainMenu")
-                    self.setup_screen()  # Reset the menu screen
-
-
-    def handleButtonClickGameOver(self, objects):
-        mouse_pos = pygame.mouse.get_pos()
-        for obj in objects:
-            if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
-                if obj.getId() == "RETURN":
-                    # Switch back to the main menu when RETURN is clicked
-                    self.mainServices.eventsHandler.changeState("MainMenu")
-                    self.setup_screen()
+                    self.render_main_menu()  # Reset the menu screen
 
 
     def connectEvents(self):
@@ -145,16 +131,16 @@ class GUI:
             "ID": 2,
             "Type": pygame.MOUSEBUTTONDOWN,
             "State": "MainMenu",
-            "Func": self.handleButtonClickMainMenu,
+            "Func": self.handleButtonClickMenus,
             "Args": [self.mainMenuObjects]
         })
         
         # button click events
         self.mainServices.eventsHandler.connectEvent({
-            "ID": 2,
+            "ID": 3,
             "Type": pygame.MOUSEBUTTONDOWN,
-            "State": "MainMenu",
-            "Func": self.handleButtonClickMainMenu,
+            "State": "GameOver",
+            "Func": self.handleButtonClickMenus,
             "Args": [self.gameOverObjects]
         })
 
@@ -178,6 +164,13 @@ class GUI:
 
         pygame.quit()
         
+        
+    def render_main_menu(self):
+        self.screen.fill((171, 186, 124))
+        
+        for button in self.mainMenuObjects:
+            button.render()
+            
     def render_game_over(self):
         self.screen.fill((171, 186, 124))
         
