@@ -49,8 +49,11 @@ class GUI:
             if self.otherPlayer.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameWon")
 
+            greenHeart = pygame.image.load("Code/Services/Images/greenHeart.png")
+            greenHeart = pygame.transform.scale(greenHeart, (50, 50))
+
             for i in range(self.player.getHealth()):
-                pygame.draw.circle(self.screen, (50,205,50), (i * 50 + 50, 50), 25)
+                self.screen.blit(greenHeart, (i * 60 + 50, 25))
 
             # Render platforms
             for platform in platforms:
