@@ -2,11 +2,13 @@ import pygame
 
 from Code.Repository import Repo
 
-class Services:
+class EventsHandler:
 	def __init__(self):
 		self.__Events = []
 		self.__state = "MainMenu"
 		self.__repo = Repo.Repo()
+	
+	
 	
 	def connectEvent(self, eventDict: dict):
 		# eventDict = { # template
