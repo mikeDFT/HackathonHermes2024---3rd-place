@@ -57,7 +57,7 @@ class Player:
     #         self.velocity_y = self.jump_strength  # Jump when space is pressed and player is on the ground
 
 
-    def update(self, timeDelta):
+    def update(self, timeDelta, networkSendFunction):
         """Update the player's position and handle collisions with platforms."""
         self.oldX = self.x
         self.oldY = self.y
@@ -77,6 +77,7 @@ class Player:
             self.reset_position()  # Reset player position
             self.life -= 1  # Decrease life count
             self.on_ground = False  # Player is no longer on the ground
+            networkSendFunction("LIFE:" + str(self.life))  # Send life count to other player
 
         # if self.velocity_y > 0:
         #     self.velocity_y = min(0, self.velocity_y - self.gravity*(timeDelta/100))
@@ -96,18 +97,11 @@ class Player:
         for platform in platforms:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
-                if self.oldY < platform.rect.y:
-                    self.rect.bottom = platform.rect.top  # Place player on top of platform
-                    self.on_ground = pygame.time.get_ticks()  # Player is on the ground
-                    self.velocity_y = 0
-                elif self.oldY > platform.rect.y:
-                    self.rect.top = platform.rect.bottom+2  # Place player below platform
-                    self.velocity_y = -self.jump_strength/2
-                    
-                # if self.oldX < platform.rect.x:
-                #     self.rect.right = platform.rect.left+1
-                # elif self.oldX > platform.rect.x:
-                #     self.rect.left = platform.rect.right-1
+                #if self.oldY < platform.rect.y:
+                self.rect.bottom = platform.rect.top  # Place player on top of platform
+                self.on_ground = pygame.time.get_ticks()  # Player is on the ground
+                self.velocity_y = 0
+            
             
     def handle_otherPlayer_collisions(self, otherPlayer):
         """Check for collisions with other player and stop falling."""

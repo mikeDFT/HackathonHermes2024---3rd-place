@@ -41,9 +41,14 @@ class Networking:
 			if not self.otherPlayer:
 				continue
 			
-			otherPlayerX, otherPlayerY = data.split(",")
-			self.otherPlayer.rect.x = float(otherPlayerX)
-			self.otherPlayer.rect.y = float(otherPlayerY)
+			dataType = data.split(":")[0]
+			if dataType == "POS":
+				data = data.split(":")[1]
+				otherPlayerX, otherPlayerY = data.split(",")
+				self.otherPlayer.rect.x = float(otherPlayerX)
+				self.otherPlayer.rect.y = float(otherPlayerY)
+			elif dataType == "LIFE":
+				self.otherPlayer.life = int(data.split(":")[1])
 			
 	
 	

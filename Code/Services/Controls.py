@@ -90,13 +90,14 @@ class Controls:
 		
 		print(pygame.time.get_ticks() - self.__player.on_ground)
 		if pygame.time.get_ticks() - self.__player.on_ground > 4000:
+			print("NOPE")
 			return
 		
 		self.__player.rect.y -= 10
 		self.__player.on_ground = 0
 		sound_manager.playSound("jump")
 		
-		print("Jump")
+		print("Jump", self.__player.on_ground, pygame.time.get_ticks() - self.__player.on_ground)
 		self.__player.velocity_y = self.__player.jump_strength
 		
 		
