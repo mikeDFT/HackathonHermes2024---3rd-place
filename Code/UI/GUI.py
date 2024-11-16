@@ -5,6 +5,8 @@ from Code.Domain.Platform import Platform
 from Code.Services import MainServices
 from Code.Domain.Player import Player
 
+from Code.Services import SoundManager
+sound_manager = SoundManager.SoundMan()
 
 class GUI:
     def __init__(self):
@@ -159,8 +161,10 @@ class GUI:
                     obj.render()
             elif state == "Game":
                 self.render_map()  # Render the game map when in the game screen
+
             elif state == "GameOver":
                 self.render_game_over()  # Render the game over screen
+
 
             # Update the display
             pygame.display.flip()
@@ -177,7 +181,7 @@ class GUI:
 
     def render_game_over(self):
         self.screen.fill((171, 186, 124))
-
+        # sound_manager.playSound("lose")
         for button in self.gameOverObjects:
             button.render()
 

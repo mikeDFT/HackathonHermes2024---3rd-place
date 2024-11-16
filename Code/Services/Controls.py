@@ -2,9 +2,11 @@ from Code.Services import EventsHandler
 from Code.Domain import Player
 import pygame
 
-
+from Code.Services import SoundManager
+sound_manager = SoundManager.SoundMan()
 
 class Controls:
+	# sound_manager = SoundManager()
 	def __init__(self, eventsHandler: EventsHandler):
 		self.__eventsHandler = eventsHandler
 		self.__player = None
@@ -93,6 +95,7 @@ class Controls:
 		
 		self.__player.rect.y -= 10
 		self.__player.on_ground = 0
+		sound_manager.playSound("jump")
 		
 		print("Jump", self.__player.on_ground, pygame.time.get_ticks() - self.__player.on_ground)
 		self.__player.velocity_y = self.__player.jump_strength
