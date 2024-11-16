@@ -93,6 +93,8 @@ class Controls:
 			print("NOPE")
 			return
 		
+		self.__player.jumping = pygame.time.get_ticks()
+		
 		self.__player.rect.y -= 10
 		self.__player.on_ground = 0
 		sound_manager.playSound("jump")

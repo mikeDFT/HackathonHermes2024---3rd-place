@@ -34,6 +34,7 @@ class Player:
         self.life = 3
         self.pushStrength = 50
         self.pushedVelocity = 0
+        self.jumping = 0
 
 
     def render(self):
@@ -79,7 +80,7 @@ class Player:
         if self.rect.y > 800:  # Assuming screen height is 800
             self.reset_position()  # Reset player position
             self.life -= 1  # Decrease life count
-            self.on_ground = False  # Player is no longer on the ground
+            self.on_ground = 0  # Player is no longer on the ground
             networkSendFunction("LIFE:" + str(self.life))  # Send life count to other player
 
         # if self.velocity_y > 0:
@@ -99,10 +100,10 @@ class Player:
         for platform in platforms:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
-                #if self.oldY < platform.rect.y:
-                self.rect.bottom = platform.rect.top  # Place player on top of platform
-                self.on_ground = pygame.time.get_ticks()  # Player is on the ground
-                self.velocity_y = 0
+                if pygame.time.get_ticks() - self.jumping > 400:
+                    self.rect.bottom = platform.rect.top  # Place player on top of platform
+                    self.on_ground = pygame.time.get_ticks()  # Player is on the ground
+                    self.velocity_y = 0
             
             
     def handle_otherPlayer_collisions(self, otherPlayer):
