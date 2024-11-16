@@ -68,6 +68,10 @@ class Controls:
 		if not self.__player:
 			return
 		
+		if not self.__player.on_ground:
+			return
+		
+		self.__player.on_ground = False
 		print("Jump")
 		self.__player.velocity_y = self.__player.jump_strength
 		

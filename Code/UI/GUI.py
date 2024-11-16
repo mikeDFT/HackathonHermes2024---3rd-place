@@ -44,9 +44,10 @@ class GUI:
             self.lastTick = currTick
 
             # Handle and render the player
-            self.player.update(deltaTime)  # Update the player's position
             self.player.handle_collisions(platforms)  # Check collisions with platforms
+            self.player.update(deltaTime)  # Update the player's position
             self.player.render()  # Draw the player on the screen
+
 
     def setup_screen(self):
         """

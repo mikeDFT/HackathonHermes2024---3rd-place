@@ -4,7 +4,6 @@ class Player:
     def __init__(self, screen, x, y, width=50, height=50, color=(255, 0, 0)):
         """
         Initialize the player.
-
         :param screen: The Pygame surface where the player will be rendered.
         :param x: The x-coordinate of the player.
         :param y: The y-coordinate of the player.
@@ -61,6 +60,7 @@ class Player:
         self.rect.x = self.x
         self.rect.y = self.y
         
+        # if not self.on_ground:
         self.velocity_y += self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
         self.velocity_y = min(self.terminalVelo, self.velocity_y)  # Limit falling speed
         
