@@ -2,8 +2,9 @@ import pygame
 from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
 from Code.Domain.Platform import Platform
-
 from Code.Services import MainServices
+from Code.Domain.Player import Player  # Import Player class
+
 
 class GUI:
     def __init__(self):
@@ -12,11 +13,7 @@ class GUI:
         self.running = True
         self.current_screen = "menu"  # Start in the menu screen
         self.setup_screen()
-        self.player = pygame.Rect(200, 400, 50, 50)  # Starting position of the player
-        self.player_velocity = 0  # Vertical velocity for jumping
-        self.gravity = 1  # Simple gravity effect
-        self.on_ground = False  # Check if player is on the ground
-
+        self.player = None  # Initialize player variable (will be created in game mode)
 
     def render_map(self):
         """
@@ -28,16 +25,22 @@ class GUI:
 
             # Create platforms
             platforms = [
-                Platform(self.screen, 100, 500),
-                Platform(self.screen, 100, 400),
-                Platform(self.screen, 100, 300)
+                Platform(self.screen, 50, 700),
+                Platform(self.screen, 50, 500),
+                Platform(self.screen, 50, 300),
+                Platform(self.screen, 300, 500),
+                Platform(self.screen, 300, 300),
+                Platform(self.screen, 300, 100)
             ]
 
             # Render platforms
             for platform in platforms:
                 platform.render()
 
-
+            # Handle and render the player
+            self.player.update()  # Update the player's position
+            self.player.handle_collisions(platforms)  # Check collisions with platforms
+            self.player.render()  # Draw the player on the screen
 
     def setup_screen(self):
         """
@@ -52,10 +55,9 @@ class GUI:
         self.objects = [play_button, settings_button, title]
         self.connectEvents(self.objects)
 
-
     def quit(self):
         self.running = False
-        
+
     def handleButtonClick(self, objects):
         mouse_pos = pygame.mouse.get_pos()
         for obj in objects:
@@ -63,10 +65,12 @@ class GUI:
                 if obj.getId() == "PLAY":
                     # Switch to the game screen when PLAY is clicked
                     self.current_screen = "game"
+                    # Initialize the player when entering the game
+                    self.player = Player(self.screen, 200, 150)  # You can adjust player start position
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
                     print("Settings button clicked!")
-    
+
     def connectEvents(self, objects):
         # quit
         self.mainServices.eventsHandler.connectEvent({
@@ -75,7 +79,7 @@ class GUI:
             "Func": self.quit,
             "Args": []
         })
-        
+
         # button click events
         self.mainServices.eventsHandler.connectEvent({
             "ID": 2,
@@ -83,11 +87,10 @@ class GUI:
             "Func": self.handleButtonClick,
             "Args": [objects]
         })
-        
 
         while self.running:
             self.mainServices.refresh()
-            
+
             # Clear the screen based on current screen state
             if self.current_screen == "menu":
                 self.screen.fill((171, 186, 124))  # Menu background color
