@@ -19,7 +19,7 @@ class SoundMan:
 
             "win": {"name": "Win.wav", "volume": 1 * soundScale},
 
-            "lose": {"name": "DeathLose.wav", "volume": 1 * soundScale},
+            "lose": {"name": "DeathLose.wav", "volume": 0.1 * soundScale},
 
             "takingDamage": {"name": "TakingDamage.wav", "volume": 1 * soundScale},
 

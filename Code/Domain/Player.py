@@ -1,5 +1,6 @@
 import pygame
-
+from Code.Services import SoundManager
+sound_manager = SoundManager.SoundMan()
 class Player:
     def __init__(self, screen, x, y, width=50, height=50, color=(255, 0, 0)):
         """
@@ -119,6 +120,7 @@ class Player:
 
     def reset_position(self):
         """Reset the player's position after falling."""
+        sound_manager.playSound("takingDamage")
         self.x = 50  # Starting x position
         self.y = 150  # Starting y position
         self.rect.x = self.x
