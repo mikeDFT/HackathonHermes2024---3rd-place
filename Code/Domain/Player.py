@@ -3,6 +3,7 @@ import random
 import pygame
 from Code.Services import SoundManager
 sound_manager = SoundManager.SoundMan()
+
 class Player:
     def __init__(self, screen, x, y, width=50, height=50, color=(255, 0, 0)):
         """
@@ -32,7 +33,7 @@ class Player:
         self.jump_strength = -15  # Jump strength (negative to go up)
         self.on_ground = 0  # To check if player is standing on the ground
         self.life = 3
-        self.pushStrength = 50
+        self.pushStrength = 70
         self.pushedVelocity = 0
         self.jumping = 0
 
