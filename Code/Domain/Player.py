@@ -57,7 +57,7 @@ class Player:
     #         self.velocity_y = self.jump_strength  # Jump when space is pressed and player is on the ground
 
 
-    def update(self, timeDelta):
+    def update(self, timeDelta, networkSend):
         """Update the player's position and handle collisions with platforms."""
         self.oldX = self.x
         self.oldY = self.y
@@ -67,6 +67,8 @@ class Player:
 
         self.rect.x = self.x
         self.rect.y = self.y
+        
+        networkSend(self.x + "," + self.y)
 
         self.velocity_y += self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
         self.velocity_y = min(self.terminalVelo, self.velocity_y)  # Limit falling speed
