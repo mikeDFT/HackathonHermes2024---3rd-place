@@ -46,6 +46,9 @@ class GUI:
             if self.player.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameOver")
 
+            if self.otherPlayer.getHealth() == 0:
+                self.mainServices.eventsHandler.changeState("GameWon")
+
             for i in range(self.player.getHealth()):
                 pygame.draw.circle(self.screen, (50,205,50), (i * 50 + 50, 50), 25)
 
@@ -91,6 +94,9 @@ class GUI:
                                font_size=40)
         title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 100)
         self.gameOverObjects = [return_button, title]
+
+        title = Title("TITLE", self.screen, "YOU OWN", self.width / 2, 100)
+        self.gameWonObjects = [return_button, title]
 
         self.connectEvents()
 
@@ -153,6 +159,14 @@ class GUI:
             "Args": [self.gameOverObjects]
         })
 
+        self.mainServices.eventsHandler.connectEvent({
+            "ID": 4,
+            "Type": pygame.MOUSEBUTTONDOWN,
+            "State": "GameWon",
+            "Func": self.handleButtonClickMenus,
+            "Args": [self.gameWonObjects]
+        })
+
         while self.running:
             self.mainServices.refresh()
 
@@ -169,7 +183,8 @@ class GUI:
             elif state == "GameOver":
                 self.render_game_over()  # Render the game over screen
 
-
+            elif state == "GameWon":
+                self.render_game_won()
             # Update the display
             pygame.display.flip()
 
@@ -187,6 +202,11 @@ class GUI:
         self.screen.fill((171, 186, 124))
         # sound_manager.playSound("lose")
         for button in self.gameOverObjects:
+            button.render()
+
+    def render_game_won(self):
+        self.screen.fill((171, 186, 124))
+        for button in self.gameWonObjects:
             button.render()
 
 
