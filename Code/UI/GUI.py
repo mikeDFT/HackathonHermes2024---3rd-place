@@ -107,6 +107,7 @@ class GUI:
         mouse_pos = pygame.mouse.get_pos()
         for obj in objects:
             if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
+                sound_manager.playSound("buttonSelect")
                 if obj.getId() == "PLAY":
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
