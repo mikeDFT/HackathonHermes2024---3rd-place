@@ -29,6 +29,8 @@ class Player:
         self.jump_strength = -15  # Jump strength (negative to go up)
         self.on_ground = 0  # To check if player is standing on the ground
         self.life = 3
+        self.pushStrength = 30
+        self.pushedVelocity = 0
 
 
     def render(self):
@@ -60,11 +62,13 @@ class Player:
         self.oldX = self.x
         self.oldY = self.y
         
-        self.x += self.velocity_x*(timeDelta/10)  # Update horizontal position
+        self.x += self.velocity_x*(timeDelta/10) + self.pushedVelocity*(timeDelta/30)  # Update horizontal position
         self.y += self.velocity_y*(timeDelta/10)  # Update vertical position
 
         self.rect.x = self.x
         self.rect.y = self.y
+        
+        self.pushedVelocity = self.pushedVelocity - self.pushedVelocity*(timeDelta/100)
         
         self.velocity_y += self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
         self.velocity_y = min(self.terminalVelo, self.velocity_y)  # Limit falling speed
@@ -105,7 +109,16 @@ class Player:
                 # elif self.oldX > platform.rect.x:
                 #     self.rect.left = platform.rect.right-1
             
-
+    def handle_otherPlayer_collisions(self, otherPlayer):
+        """Check for collisions with other player and stop falling."""
+        if self.rect.colliderect(otherPlayer.rect):
+            if self.rect.x < otherPlayer.rect.x:
+                self.pushedVelocity = -self.pushStrength
+            else:
+                self.pushedVelocity = self.pushStrength
+            
+            self.velocity_y = -self.pushStrength/4
+            
 
     def getHealth(self):
         return self.life
