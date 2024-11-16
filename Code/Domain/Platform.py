@@ -1,7 +1,7 @@
 import pygame
 
 class Platform:
-    def __init__(self, screen, x, y, width=130, height=50, color=(252, 186, 3)):
+    def __init__(self, screen, x, y, width=130, height=5, color=(252, 186, 3)):
         self.screen = screen
         self.x = x
         self.y = y

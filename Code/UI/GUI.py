@@ -82,7 +82,7 @@ class GUI:
         play_button = Button("PLAY", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 300, 250, 100, "PLAY", font_size=40)
         settings_button = Button("SETTINGS", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 450, 250, 100, "SETTINGS",
                                  font_size=40)
-        title = Title("TITLE", self.screen, "Jocul Nostru", self.width / 2, 100)
+        title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 100)
         self.objects = [play_button, settings_button, title]
         self.connectEvents(self.objects)
 
@@ -96,6 +96,7 @@ class GUI:
                 if obj.getId() == "PLAY":
                     # Switch to the game screen when PLAY is clicked
                     self.current_screen = "game"
+                    self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
                     self.player = Player(self.screen, 50, 150)  # You can adjust player start position
                     self.otherPlayer = Player(self.screen, 50, 150)
@@ -120,6 +121,7 @@ class GUI:
         self.mainServices.eventsHandler.connectEvent({
             "ID": 1,
             "Type": pygame.QUIT,
+            "State": "MainMenu",
             "Func": self.quit,
             "Args": []
         })
@@ -128,6 +130,7 @@ class GUI:
         self.mainServices.eventsHandler.connectEvent({
             "ID": 2,
             "Type": pygame.MOUSEBUTTONDOWN,
+            "State": "MainMenu",
             "Func": self.handleButtonClick,
             "Args": [objects]
         })
