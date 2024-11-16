@@ -4,8 +4,9 @@ from Code.Domain.Title import Title
 from Code.Domain.Platform import Platform
 from Code.Services import MainServices
 from Code.Domain.Player import Player
-
+from Code.Domain.InputBox import InputBox
 from Code.Services import SoundManager
+
 sound_manager = SoundManager.SoundMan()
 
 class GUI:
@@ -32,15 +33,15 @@ class GUI:
 
             # Create platforms
             platforms = [
-                Platform(self.screen, 100, 150, 200, 40),
-                Platform(self.screen, 800, 500, 220, 60),
-                Platform(self.screen, 300, 350, 180, 50),
-                Platform(self.screen, 600, 200, 300, 45),
-                Platform(self.screen, 50, 500, 180, 35),
-                Platform(self.screen, 500, 550, 150, 50),
-                Platform(self.screen, 700, 50, 270, 30),
-                Platform(self.screen, 200, 600, 220, 60),
-                Platform(self.screen, 900, 350, 240, 40)
+                Platform(self.screen, 150, 100, 250, 50),
+                Platform(self.screen, 850, 450, 200, 40),
+                Platform(self.screen, 400, 300, 190, 55),
+                Platform(self.screen, 650, 250, 310, 50),
+                Platform(self.screen, 100, 550, 170, 45),
+                Platform(self.screen, 450, 500, 160, 40),
+                Platform(self.screen, 750, 100, 280, 35),
+                Platform(self.screen, 250, 650, 210, 50),
+                Platform(self.screen, 950, 400, 230, 45)
             ]
 
             if self.player.getHealth() == 0:
@@ -98,8 +99,13 @@ class GUI:
         title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 100)
         self.gameOverObjects = [return_button, title]
 
-        title = Title("TITLE", self.screen, "YOU OWN", self.width / 2, 100)
+        title = Title("TITLE", self.screen, "YOU WON", self.width / 2, 100)
         self.gameWonObjects = [return_button, title]
+
+        title = Title("TITLE", self.screen, "SETTINGS", self.width / 2, 100)
+        ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 200, 450, 50)
+
+        self.settingObjects = [ip_input_field, title, return_button]
 
         self.connectEvents()
 
@@ -127,12 +133,27 @@ class GUI:
                     self.mainServices.networking.send("LIFE:" + str(self.player.life))
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
-                    print("Settings button clicked!")
+                    self.mainServices.eventsHandler.changeState("Settings")
+                    self.render_setting()
                 elif obj.getId() == "RETURN":
                     # Switch back to the main menu when RETURN is clicked
                     self.mainServices.eventsHandler.changeState("MainMenu")
                     self.render_main_menu()  # Reset the menu screen
 
+    def handleKeypressInputbox(self, event):
+        for obj in self.settingObjects:
+            if isinstance(obj, InputBox):
+                obj.handle_event(event)
+
+    def keypress_wrapper(self):
+        """
+        Wrapper to handle keypress events by injecting the current event.
+        """
+
+        def wrapper(event):
+            self.handleKeypressInputbox(event)
+
+        return wrapper
 
     def connectEvents(self):
         # quit
@@ -170,6 +191,22 @@ class GUI:
             "Args": [self.gameWonObjects]
         })
 
+        self.mainServices.eventsHandler.connectEvent({
+            "ID": 5,
+            "Type": pygame.MOUSEBUTTONDOWN,
+            "State": "Settings",
+            "Func": self.handleButtonClickMenus,
+            "Args": [self.settingObjects]
+        })
+
+        self.mainServices.eventsHandler.connectEvent({
+            "ID": 6,
+            "Type": pygame.KEYDOWN,
+            "State": "Settings",
+            "Func": lambda event: self.handleKeypressInputbox(event),  # Pass the event dynamically
+            "Args": []  # No static arguments needed
+        })
+
         while self.running:
             self.mainServices.refresh()
 
@@ -188,6 +225,9 @@ class GUI:
 
             elif state == "GameWon":
                 self.render_game_won()
+
+            elif state == "Settings":
+                self.render_setting()
             # Update the display
             pygame.display.flip()
 
@@ -204,13 +244,18 @@ class GUI:
     def render_game_over(self):
         self.screen.fill((171, 186, 124))
         # sound_manager.playSound("lose")
-        for button in self.gameOverObjects:
-            button.render()
+        for object in self.gameOverObjects:
+            object.render()
 
     def render_game_won(self):
         self.screen.fill((171, 186, 124))
-        for button in self.gameWonObjects:
-            button.render()
+        for object in self.gameWonObjects:
+            object.render()
+
+    def render_setting(self):
+        self.screen.fill((171, 186, 124))
+        for object in self.settingObjects:
+            object.render()
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ from Code.Repository import Repo
 class EventsHandler:
 	def __init__(self):
 		self.__Events = []
-		self.__state = "MainMenu" # "MainMenu", "Game", "GameOver"
+		self.__state = "MainMenu" # "MainMenu", "Game", "GameOver", "GameWon", "Settings"
 		self.__repo = Repo.Repo()
 	
 	
@@ -35,8 +35,8 @@ class EventsHandler:
 			if event["ID"] == eventID:
 				self.__Events.remove(event)
 				return
-			
-	
+
+
 	def refresh(self):
 		for event in pygame.event.get():
 			for eventDict in self.__Events:
@@ -44,5 +44,3 @@ class EventsHandler:
 						("State" not in eventDict or eventDict["State"] == self.__state) and
 						eventDict["Type"] == event.type):
 					eventDict["Func"](*eventDict["Args"])
-					
-	
