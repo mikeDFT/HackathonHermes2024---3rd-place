@@ -49,8 +49,11 @@ class GUI:
             if self.otherPlayer.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameWon")
 
+            greenHeart = pygame.image.load("Code/Services/Images/greenHeart.png")
+            greenHeart = pygame.transform.scale(greenHeart, (50, 50))
+
             for i in range(self.player.getHealth()):
-                pygame.draw.circle(self.screen, (50,205,50), (i * 50 + 50, 50), 25)
+                self.screen.blit(greenHeart, (i * 60 + 50, 25))
 
             # Render platforms
             for platform in platforms:
@@ -100,8 +103,10 @@ class GUI:
 
         self.connectEvents()
 
+
     def quit(self):
         self.running = False
+
 
     def handleButtonClickMenus(self, objects):
         mouse_pos = pygame.mouse.get_pos()
@@ -112,7 +117,7 @@ class GUI:
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
-                    self.player = Player(self.screen, 50, 150, color=(50,205,50))  # You can adjust player start position
+                    self.player = Player(self.screen, 50, 150, color=(50, 205, 50))  # You can adjust player start position
 
                     self.otherPlayer = Player(self.screen, 300, 150)
                     self.otherPlayer.rect.x = 100000

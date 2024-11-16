@@ -34,11 +34,11 @@ class Controls:
 				"ArgsUp": ["right"],
 				"EventKey": pygame.K_d,
 			},
-			"S": {
-				"FuncDown": self.__moveDown,
-				"ArgsDown": [],
-				"EventKey": pygame.K_s,
-			}
+			# "S": {
+			# 	"FuncDown": self.__moveDown,
+			# 	"ArgsDown": [],
+			# 	"EventKey": pygame.K_s,
+			# }
 		}
 		
 		ID = 1000
@@ -67,9 +67,6 @@ class Controls:
 			
 	def passPlayer(self, player: Player):
 		self.__player = player
-
-	def __checkKey(self, keyLetter: str, keyState: str, func, args):
-		func(*args)
 		
 	
 	def __move(self):
@@ -81,6 +78,9 @@ class Controls:
 			velo -= self.__player.speed
 		if self.__movingRight:
 			velo += self.__player.speed
+			
+		if pygame.time.get_ticks() - self.__player.on_ground > 100:
+			velo /= 1.6
 		
 		self.__player.velocity_x = velo
 	
@@ -88,9 +88,7 @@ class Controls:
 		if not self.__player:
 			return
 		
-		print(pygame.time.get_ticks() - self.__player.on_ground)
 		if pygame.time.get_ticks() - self.__player.on_ground > 4000:
-			print("NOPE")
 			return
 		
 		self.__player.jumping = pygame.time.get_ticks()
@@ -99,7 +97,9 @@ class Controls:
 		self.__player.on_ground = 0
 		sound_manager.playSound("jump")
 		
-		print("Jump", self.__player.on_ground, pygame.time.get_ticks() - self.__player.on_ground)
+		if self.__player.velocity_x > 0:
+			self.__player.velocity_x /= 1.4
+		
 		self.__player.velocity_y = self.__player.jump_strength
 		
 		
@@ -133,12 +133,12 @@ class Controls:
 		
 		self.__move()
 		
-	def __moveDown(self):
-		return
-		if not self.__player:
-			return
-		
-		self.__player.velocity_y = self.__player.speed*50
-		print("Move down")
+	# def __moveDown(self):
+	# 	return
+	# 	if not self.__player:
+	# 		return
+	#
+	# 	self.__player.velocity_y = self.__player.speed
+	# 	print("Move down")
 		
 	

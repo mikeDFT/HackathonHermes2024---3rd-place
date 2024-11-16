@@ -28,15 +28,15 @@ class Networking:
 		self.__socket.sendto(data.encode(), (self.__otherIP, self.__otherPort))
 	
 	
-	def recieve(self):
+	def receive(self):
 		data, addr = self.__socket.recvfrom(1024)
 		return data.decode(), addr
 	
 	
 	def __listen(self):
 		while True:
-			data, addr = self.recieve()
-			# print(f"Recieved: {data} from {addr}")
+			data, addr = self.receive()
+			# print(f"Received: {data} from {addr}")
 			
 			if not self.otherPlayer:
 				continue
