@@ -94,7 +94,6 @@ class Player:
     def handle_collisions(self, platforms):
         """Check for collisions with platforms and stop falling."""
         self.on_ground = 0  # Assume player is not on the ground
-        
         for platform in platforms:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
@@ -107,6 +106,7 @@ class Player:
     def handle_otherPlayer_collisions(self, otherPlayer):
         """Check for collisions with other player and stop falling."""
         if self.rect.colliderect(otherPlayer.rect):
+            sound_manager.playSound("enemyTakingDamage")
             if self.rect.x < otherPlayer.rect.x:
                 self.pushedVelocity = -self.pushStrength
             else:
