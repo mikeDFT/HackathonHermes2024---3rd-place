@@ -9,6 +9,12 @@ class EventsHandler:
 		self.__repo = Repo.Repo()
 	
 	
+	def changeState(self, newState: str):
+		self.__state = newState
+		
+	def getState(self):
+		return self.__state
+	
 	
 	def connectEvent(self, eventDict: dict):
 		# eventDict = { # template
