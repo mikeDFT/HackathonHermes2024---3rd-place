@@ -15,6 +15,8 @@ class Player:
         self.screen = screen
         self.x = x
         self.y = y
+        self.oldX = x
+        self.oldY = y
         self.width = width
         self.height = height
         self.color = color
@@ -27,6 +29,7 @@ class Player:
         self.x_drag = 1  # like gravity but on the X axis
         self.jump_strength = -15  # Jump strength (negative to go up)
         self.on_ground = False  # To check if player is standing on the ground
+        self.on_ceiling = False  # To check if player is standing on the ceiling
         self.life = 3
 
 
@@ -56,6 +59,9 @@ class Player:
 
     def update(self, timeDelta):
         """Update the player's position and handle collisions with platforms."""
+        self.oldX = self.x
+        self.oldY = self.y
+        
         self.x += self.velocity_x*(timeDelta/10)  # Update horizontal position
         self.y += self.velocity_y*(timeDelta/10)  # Update vertical position
 
@@ -84,13 +90,24 @@ class Player:
     def handle_collisions(self, platforms):
         """Check for collisions with platforms and stop falling."""
         self.on_ground = False  # Assume player is not on the ground
+        self.on_ceiling = False  # Assume player is not on the ceiling
+        
         for platform in platforms:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
-                if self.velocity_y > 0:  # Only resolve collision if falling
-                    self.rect.bottom = platform.rect.top  # Place player on top of platform
-                    self.velocity_y = 0  # Stop vertical velocity (no more falling)
+                if self.oldY < platform.rect.y:
+                    self.rect.bottom = platform.rect.top+1  # Place player on top of platform
                     self.on_ground = True  # Player is on the ground
+                    self.velocity_y = 0
+                elif self.oldY > platform.rect.y:
+                    self.rect.top = platform.rect.bottom+2  # Place player below platform
+                    self.velocity_y = -self.jump_strength/2
+                    
+                # if self.oldX < platform.rect.x:
+                #     self.rect.right = platform.rect.left+1
+                # elif self.oldX > platform.rect.x:
+                #     self.rect.left = platform.rect.right-1
+            
 
 
     def getHealth(self):

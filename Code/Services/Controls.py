@@ -68,12 +68,18 @@ class Controls:
 		if not self.__player:
 			return
 		
-		if not self.__player.on_ground:
+		if not self.__player.on_ground and not self.__player.on_ceiling:
 			return
 		
-		self.__player.on_ground = False
 		print("Jump")
-		self.__player.velocity_y = self.__player.jump_strength
+		
+		if self.__player.on_ceiling:
+			self.__player.velocity_y = self.__player.jump_strength*10
+			self.__player.on_ceiling = False
+		else:
+			self.__player.velocity_y = self.__player.jump_strength
+			self.__player.on_ground = False
+			
 		
 	def __moveLeft(self):
 		if not self.__player:

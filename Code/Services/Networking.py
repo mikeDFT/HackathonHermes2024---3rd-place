@@ -11,8 +11,8 @@ class Networking:
 		self.__socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		self.__socket.bind((localIP, localPort))
 		
-		# self.__thread = threading.Thread(target=self.__listen)
-		# self.__thread.start()
+		self.__thread = threading.Thread(target=self.__listen)
+		self.__thread.start()
 		
 	
 	def send(self, data: str):
