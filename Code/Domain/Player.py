@@ -22,7 +22,8 @@ class Player:
         self.velocity_x = 0  # Horizontal velocity (left/right movement)
         self.velocity_y = 0  # Vertical velocity (up/down movement)
         self.speed = 5  # Speed of player movement
-        self.gravity = 1  # Gravity constant for falling
+        self.gravity = 5  # Gravity constant for falling
+        self.terminalVelo = 10  # Terminal velocity for falling
         self.x_drag = 1  # like gravity but on the X axis
         self.jump_strength = -15  # Jump strength (negative to go up)
         self.on_ground = False  # To check if player is standing on the ground
@@ -53,16 +54,25 @@ class Player:
 
 
     def update(self, timeDelta):
-        print(timeDelta)
         """Update the player's position and handle collisions with platforms."""
-        self.x += self.velocity_x*(timeDelta/100)  # Update horizontal position
-        self.y += self.velocity_y*(timeDelta/100)  # Update vertical position
+        self.x += self.velocity_x*(timeDelta/10)  # Update horizontal position
+        self.y += self.velocity_y*(timeDelta/10)  # Update vertical position
         
         self.rect.x = self.x
         self.rect.y = self.y
         
-        self.velocity_y -= self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
-        self.velocity_x -= self.x_drag*(timeDelta / 100)  # Apply gravity to vertical velocity
+        self.velocity_y += self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
+        self.velocity_y = min(self.terminalVelo, self.velocity_y)  # Limit falling speed
+        
+        # if self.velocity_y > 0:
+        #     self.velocity_y = min(0, self.velocity_y - self.gravity*(timeDelta/100))
+        # if self.velocity_y < 0:
+        #     self.velocity_y = max(0, self.velocity_y + self.gravity*(timeDelta/100))
+        #
+        # if self.velocity_x > 0:
+        #     self.velocity_x = max(0, self.velocity_x - self.x_drag*(timeDelta/100))
+        # if self.velocity_x < 0:
+        #     self.velocity_x = min(0, self.velocity_x + self.x_drag*(timeDelta/100))
         
 
     def handle_collisions(self, platforms):

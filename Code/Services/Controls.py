@@ -26,6 +26,11 @@ class Controls:
 				"FuncUp": self.__stopMove,
 				"ArgsUp": [],
 				"EventKey": pygame.K_d,
+			},
+			"S": {
+				"FuncDown": self.__moveDown,
+				"ArgsDown": [],
+				"EventKey": pygame.K_s,
 			}
 		}
 		
@@ -70,18 +75,29 @@ class Controls:
 		if not self.__player:
 			return
 		
+		self.__player.velocity_x = self.__player.speed * -1
 		print("Move left")
 	
 	def __moveRight(self):
 		if not self.__player:
 			return
 		
+		self.__player.velocity_x = self.__player.speed
 		print("Move right")
 		
 	def __stopMove(self):
 		if not self.__player:
 			return
 		
+		self.__player.velocity_x = 0
 		print("Stop move")
+		
+		
+	def __moveDown(self):
+		if not self.__player:
+			return
+		
+		self.__player.velocity_y = self.__player.speed*50
+		print("Move down")
 		
 	
