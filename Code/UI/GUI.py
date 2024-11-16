@@ -57,9 +57,14 @@ class GUI:
             self.lastTick = currTick
 
             # Handle and render the player
-            self.player.update(deltaTime, self.mainServices.networking.send)  # Update the player's position
+            self.player.update(deltaTime)  # Update the player's position
             self.player.handle_collisions(platforms)  # Check collisions with platforms
+            self.player.handle_otherPlayer_collisions(self.otherPlayer)
+            # self.mainServices.refresh()
+            self.mainServices.networking.send(str(self.player.rect.x) + "," + str(self.player.rect.y))
+            
             self.player.render()  # Draw the player on the screen
+            self.otherPlayer.render()
 
             # if self.otherPlayer:
             #     self.otherPlayer.render()
