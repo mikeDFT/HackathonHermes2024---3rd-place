@@ -35,4 +35,4 @@ class Networking:
 	
 
 if __name__ == "__main__":
-	networking = Networking("192.168.35.243", 1234, "192.168.35.244", 1234)
+	networking = Networking("localhost", 1234, "192.168.35.244", 1234)
