@@ -3,10 +3,12 @@ from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
 from Code.Domain.Platform import Platform
 
+from Code.Services import MainServices
 
 class GUI:
     def __init__(self):
         pygame.init()
+        self.mainServices = MainServices.MainServices()
         self.running = True
         self.current_screen = "menu"  # Start in the menu screen
         self.setup_screen()
@@ -14,6 +16,7 @@ class GUI:
         self.player_velocity = 0  # Vertical velocity for jumping
         self.gravity = 1  # Simple gravity effect
         self.on_ground = False  # Check if player is on the ground
+
 
     def render_map(self):
         """
@@ -48,6 +51,7 @@ class GUI:
         title = Title("TITLE", self.screen, "Jocul Nostru", 245, 100)
         self.objects = [play_button, settings_button, title]
         self.connectEvents(self.objects)
+
 
     def quit(self):
         self.running = False
