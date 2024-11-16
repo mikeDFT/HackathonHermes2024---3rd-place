@@ -37,14 +37,16 @@ class EventsHandler:
 				return
 			
 	
-	def __handleEvents(self):
-		for event in pygame.event.get():
-			for eventFunction in self.__Events:
-				if ("EventKey" not in eventFunction or eventFunction["EventKey"] == event.key) ("State" not in eventFunction or eventFunction["State"] == self.__state) and eventFunction["Type"] == event.type:
-					eventFunction["Func"](*eventFunction["Args"])
-					
-
-
 	def refresh(self):
-		self.__handleEvents()
+		for event in pygame.event.get():
+			print(event.type)
+			for eventDict in self.__Events:
+				if event.type in [pygame.KEYUP, pygame.KEYDOWN]:
+					print(event.type, event.key)
+					
+				if (("EventKey" not in eventDict or (event.type in [pygame.KEYUP, pygame.KEYDOWN] and eventDict["EventKey"] == event.key)) and
+						("State" not in eventDict or eventDict["State"] == self.__state) and
+						eventDict["Type"] == event.type):
+					eventDict["Func"](*eventDict["Args"])
+					
 	
