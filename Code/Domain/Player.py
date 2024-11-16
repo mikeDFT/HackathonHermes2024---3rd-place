@@ -68,7 +68,7 @@ class Player:
         self.rect.x = self.x
         self.rect.y = self.y
         
-        networkSend(self.x + "," + self.y)
+        networkSend(str(self.x) + "," + str(self.y))
 
         self.velocity_y += self.gravity*(timeDelta/100)  # Apply gravity to vertical velocity
         self.velocity_y = min(self.terminalVelo, self.velocity_y)  # Limit falling speed
@@ -98,7 +98,7 @@ class Player:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
                 if self.oldY < platform.rect.y:
-                    self.rect.bottom = platform.rect.top+1  # Place player on top of platform
+                    self.rect.bottom = platform.rect.top+5  # Place player on top of platform
                     self.on_ground = True  # Player is on the ground
                     self.velocity_y = 0
                 elif self.oldY > platform.rect.y:
