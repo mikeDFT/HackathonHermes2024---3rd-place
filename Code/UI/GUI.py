@@ -112,6 +112,8 @@ class GUI:
 
                     self.mainServices.passPlayer(self.player)
                     self.mainServices.passOtherPlayer(self.otherPlayer)
+                    
+                    self.mainServices.networking.send("LIFE:" + str(self.player.life))
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
                     print("Settings button clicked!")
