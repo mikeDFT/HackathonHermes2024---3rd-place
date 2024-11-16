@@ -85,11 +85,7 @@ class GUI:
         return_button = Button("RETURN", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 300, 250, 100, "RETURN",
                                font_size=40)
         title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 100)
-        self.objects = [return_button, title]
-        return_button.render()
-        title.render()
-        
-        self.gameOverObjects = [return_button]
+        self.gameOverObjects = [return_button, title]
         
         self.connectEvents()
 
@@ -130,7 +126,7 @@ class GUI:
             if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
                 if obj.getId() == "RETURN":
                     # Switch back to the main menu when RETURN is clicked
-                    self.current_screen = "menu"
+                    self.mainServices.eventsHandler.changeState("MainMenu")
                     self.setup_screen()
 
 
@@ -158,7 +154,7 @@ class GUI:
             "ID": 2,
             "Type": pygame.MOUSEBUTTONDOWN,
             "State": "MainMenu",
-            "Func": self.handleButtonClickGameOver,
+            "Func": self.handleButtonClickMainMenu,
             "Args": [self.gameOverObjects]
         })
 
@@ -170,17 +166,23 @@ class GUI:
             # Clear the screen based on current screen state
             if state == "MainMenu":
                 self.screen.fill((171, 186, 124))  # Menu background color
-                for obj in self.objects:
+                for obj in self.mainMenuObjects:
                     obj.render()
             elif state == "Game":
                 self.render_map()  # Render the game map when in the game screen
-            elif state== "GameOver":
-                pass #self.render_game_over()  # Render the game over screen
+            elif state == "GameOver":
+                self.render_game_over()  # Render the game over screen
 
             # Update the display
             pygame.display.flip()
 
         pygame.quit()
+        
+    def render_game_over(self):
+        self.screen.fill((171, 186, 124))
+        
+        for button in self.gameOverObjects:
+            button.render()
 
 
 if __name__ == "__main__":
