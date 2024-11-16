@@ -81,6 +81,9 @@ class Controls:
 			velo -= self.__player.speed
 		if self.__movingRight:
 			velo += self.__player.speed
+			
+		if pygame.time.get_ticks() - self.__player.on_ground > 100:
+			velo /= 1.6
 		
 		self.__player.velocity_x = velo
 	
@@ -96,6 +99,9 @@ class Controls:
 		self.__player.rect.y -= 10
 		self.__player.on_ground = 0
 		sound_manager.playSound("jump")
+		
+		if self.__player.velocity_x > 0:
+			self.__player.velocity_x /= 1.4
 		
 		self.__player.velocity_y = self.__player.jump_strength
 		

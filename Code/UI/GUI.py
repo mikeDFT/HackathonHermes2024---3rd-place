@@ -113,7 +113,7 @@ class GUI:
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
-                    self.player = Player(self.screen, 50, 150, color=(50,205,50))  # You can adjust player start position
+                    self.player = Player(self.screen, 50, 150, color=(50, 205, 50))  # You can adjust player start position
 
                     self.otherPlayer = Player(self.screen, 300, 150)
                     self.otherPlayer.rect.x = 100000
