@@ -14,6 +14,7 @@ class GUI:
         self.current_screen = "menu"  # Start in the menu screen
         self.setup_screen()
         self.player = None
+        self.otherPlayer = None
         
 
 
@@ -64,8 +65,10 @@ class GUI:
         self.objects = [play_button, settings_button, title]
         self.connectEvents(self.objects)
 
+
     def quit(self):
         self.running = False
+
 
     def handleButtonClick(self, objects):
         mouse_pos = pygame.mouse.get_pos()
@@ -76,7 +79,10 @@ class GUI:
                     self.current_screen = "game"
                     # Initialize the player when entering the game
                     self.player = Player(self.screen, 50, 150)  # You can adjust player start position
+                    self.otherPlayer = Player(self.screen, 50, 150)
+                    
                     self.mainServices.passPlayer(self.player)
+                    self.mainServices.passOtherPlayer(self.otherPlayer)
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
                     print("Settings button clicked!")
