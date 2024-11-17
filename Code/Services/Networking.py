@@ -56,14 +56,10 @@ class Networking:
 				self.otherPlayer.rect.y = float(otherPlayerY)
 
 			elif dataType == "LIFE":
-				new_life = int(data.split(":")[1])
-
 				if not self.otherPlayer:
 					continue
-
-				self.otherPlayer.pushStrength = 150
-
-
+				
+				self.otherPlayer.life = int(data.split(":")[1])
 			elif dataType == "MAP":
 				map_id = int(data.split(":")[1])  # Extract map ID as integer
 				
