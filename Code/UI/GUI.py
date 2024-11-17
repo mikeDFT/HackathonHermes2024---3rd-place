@@ -7,6 +7,7 @@ from Code.Domain.Player import Player
 from Code.Domain.InputBox import InputBox
 from Code.Services import SoundManager
 from Code.Services.ImageManager import ImageManager
+from Code.Services.MapManager import MapManager
 
 sound_manager = SoundManager.SoundMan()
 image_manager = ImageManager()
@@ -110,17 +111,12 @@ class GUI:
                 sound_manager.playSound("buttonSelect")
                 if obj.getId() == "PLAY":
                     # Create platforms (map)
-                    self.platforms = [
-                        Platform(self.screen, 150, 100, 250, 50),
-                        Platform(self.screen, 850, 450, 200, 40),
-                        Platform(self.screen, 400, 300, 190, 55),
-                        Platform(self.screen, 650, 250, 310, 50),
-                        Platform(self.screen, 100, 550, 170, 45),
-                        Platform(self.screen, 450, 500, 160, 40),
-                        Platform(self.screen, 750, 100, 280, 35),
-                        Platform(self.screen, 250, 650, 210, 50),
-                        Platform(self.screen, 950, 400, 230, 45)
-                    ]
+                    map = MapManager(self.screen).getRandomMap()
+                    self.platforms = map["MAP"]
+
+                    # Send map to the other user
+                    # print("MAP:" + str(map["ID"]))
+                    self.mainServices.networking.send("MAP:" + str(map["ID"]))
 
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")

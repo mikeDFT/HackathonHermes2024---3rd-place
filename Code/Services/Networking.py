@@ -2,6 +2,8 @@ import socket
 import threading
 
 from Code.Domain.Player import Player
+from Code.Services.MapManager import MapManager
+
 
 class Networking:
 	def __init__(self, localIP, localPort, otherIP, otherPort):
@@ -42,7 +44,13 @@ class Networking:
 				continue
 			
 			dataType = data.split(":")[0]
-			if dataType == "POS":
+			if dataType == "MAP":
+				map_id = int(data.split(":")[1])  # Extract map ID as integer
+				# Retrieve the map from MapManager
+				map_manager = MapManager(self.otherPlayer.screen)  # Assuming screen is accessible
+				self.otherPlayer.platforms = map_manager.getMapById(map_id)["MAP"]
+				self.otherPlayer.map_id = map_id
+			elif dataType == "POS":
 				data = data.split(":")[1]
 				otherPlayerX, otherPlayerY = data.split(",")
 				self.otherPlayer.rect.x = float(otherPlayerX)

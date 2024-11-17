@@ -9,7 +9,7 @@ class MainServices:
 		self.controls = Controls.Controls(eventsHandler=self.eventsHandler)
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		s.connect(("8.8.8.8", 80))
-		print(s.getsockname()[0])
+		print("Your IP is: " + s.getsockname()[0])
 		self.networking = Networking.Networking(s.getsockname()[0], 1234, "192.168.100.16", 1234)
 		
 		# self.refresh()
