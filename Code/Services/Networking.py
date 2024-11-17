@@ -42,18 +42,23 @@ class Networking:
 			data, addr = self.receive()
 			# print(f"Received: {data} from {addr}")
 			
-			if not self.otherPlayer:
-				continue
 			
 			dataType = data.split(":")[0]
 			if dataType == "POS":
+				if not self.otherPlayer:
+					continue
+					
 				data = data.split(":")[1]
 				otherPlayerX, otherPlayerY = data.split(",")
 				self.otherPlayer.rect.x = float(otherPlayerX)
 				self.otherPlayer.rect.y = float(otherPlayerY)
 			elif dataType == "LIFE":
+				if not self.otherPlayer:
+					continue
+					
 				self.otherPlayer.life = int(data.split(":")[1])
 			elif dataType == "MAP":
+				print(data)
 				map_id = int(data.split(":")[1])  # Extract map ID as integer
 				
 				if map_id == 0: # other player has no map
@@ -63,6 +68,7 @@ class Networking:
 				# Retrieve the map from MapManager
 				self.applyMapID(map_id)
 			elif dataType == "REQ|MAP":
+				print(data)
 				if self.map:
 					self.send("MAP:" + str(self.map["ID"]))
 				else:
