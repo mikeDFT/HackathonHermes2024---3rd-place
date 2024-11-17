@@ -1,4 +1,5 @@
 import pygame
+import os
 from Code.Domain.Entity import Entity
 
 import pygame
@@ -34,8 +35,8 @@ class Button(Entity):
         self.font_size = font_size
         self.shadow_opacity = shadow_opacity
 
-        self.font = pygame.font.Font('Code/Domain/RetroBlendy-LVOm3.otf',
-                                     self.font_size)  # Replace with your retro font path
+        path = os.path.join(os.path.dirname(__file__), "RetroBlendy-LVOm3.otf")
+        self.font = pygame.font.Font(path, self.font_size)  # Replace with your retro font path
         self.render()
 
     def render(self):

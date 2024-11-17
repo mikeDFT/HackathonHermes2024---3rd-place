@@ -110,7 +110,7 @@ class Controls:
 		self.__movingLeft = True
 		
 		self.__move()
-		print("Move left")
+		# print("Move left")
 	
 	def __moveRight(self):
 		if not self.__player:
@@ -119,7 +119,7 @@ class Controls:
 		self.__movingRight = True
 		
 		self.__move()
-		print("Move right")
+		# print("Move right")
 		
 		
 	def __stopMove(self, direction: str):

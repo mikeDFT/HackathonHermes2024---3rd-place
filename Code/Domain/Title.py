@@ -1,5 +1,6 @@
 from Code.Domain.Entity import Entity
 import pygame
+import os
 
 class Title(Entity):
     def __init__(self, id, screen, text, x, y, font_size=150, text_color=(0, 0, 0), font_name=None):
@@ -22,8 +23,9 @@ class Title(Entity):
         self.font_size = font_size
         self.text_color = text_color
         self.font_name = font_name if font_name else None
-
-        self.font = pygame.font.Font('Code/Domain/RetroBlendy-LVOm3.otf', self.font_size)  # Replace with your retro font path
+        
+        path = os.path.join(os.path.dirname(__file__), "RetroBlendy-LVOm3.otf")
+        self.font = pygame.font.Font(path, self.font_size)  # Replace with your retro font path
         self.render()
 
     def render(self):
