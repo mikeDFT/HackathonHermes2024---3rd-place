@@ -129,10 +129,12 @@ class GUI:
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
-                    self.player = Player(self.screen, 50, 150, color=(50, 205, 50))  # You can adjust player start position
+                    playerIcon = image_manager.getPlayerIcon("blue")
+                    self.player = Player(self.screen, 50, 150, playerIcon, color=(50, 205, 50))  # You can adjust player start position
                     self.player.x, self.player.y = self.player.spawnPoint(self.platforms)
 
-                    self.otherPlayer = Player(self.screen, 300, 150)
+                    playerIcon = image_manager.getPlayerIcon("red")
+                    self.otherPlayer = Player(self.screen, 300, 150, playerIcon)
                     self.otherPlayer.rect.x = 100000
 
                     self.mainServices.passPlayer(self.player)
