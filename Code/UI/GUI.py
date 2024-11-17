@@ -6,8 +6,10 @@ from Code.Services import MainServices
 from Code.Domain.Player import Player
 from Code.Domain.InputBox import InputBox
 from Code.Services import SoundManager
+from Code.Services.ImageManager import ImageManager
 
 sound_manager = SoundManager.SoundMan()
+image_manager = ImageManager()
 
 class GUI:
     def __init__(self):
@@ -50,9 +52,7 @@ class GUI:
             if self.otherPlayer.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameWon")
 
-            greenHeart = pygame.image.load("Code/Services/Images/greenHeart.png")
-            greenHeart = pygame.transform.scale(greenHeart, (50, 50))
-
+            greenHeart = image_manager.getHeart("green")
             for i in range(self.player.getHealth()):
                 self.screen.blit(greenHeart, (i * 60 + 50, 25))
 
@@ -71,8 +71,10 @@ class GUI:
             self.mainServices.networking.send("POS:" + str(self.player.rect.x) + "," + str(self.player.rect.y))
             self.player.render()  # Draw the player on the screen
             self.otherPlayer.render()
+
+            redHeart = image_manager.getHeart("red")
             for i in range(self.otherPlayer.getHealth()):
-                pygame.draw.circle(self.screen, (220, 20, 60), (i * 50 + 1050, 50), 25)
+                self.screen.blit(redHeart, (i * 52 + 1000, 25))
             # if self.otherPlayer:
             #     self.otherPlayer.render()
 
