@@ -1,6 +1,9 @@
 import pygame
 from Code.Domain.Entity import Entity
 
+import pygame
+from Code.Domain.Entity import Entity
+
 class Button(Entity):
     def __init__(self, id, screen, color, x, y, length, width, text=None, text_color=(0, 0, 0), font_size=20, shadow_opacity=128):
         """
@@ -29,7 +32,7 @@ class Button(Entity):
         self.font_size = font_size
         self.shadow_opacity = shadow_opacity
 
-        self.font = pygame.font.Font(None, self.font_size)  # Use default font
+        self.font = pygame.font.Font('Code/Domain/RetroBlendy-LVOm3.otf', self.font_size)  # Replace with your retro font path
         self.render()
 
     def render(self):
@@ -52,6 +55,7 @@ class Button(Entity):
             text_surface = self.font.render(self.text, True, self.text_color)
             text_rect = text_surface.get_rect(center=(self.x + self.length // 2, self.y + self.width // 2))
             self.screen.blit(text_surface, text_rect)
+
 
     def is_pressed(self, mouse_pos):
         """Check if the button is pressed by the mouse."""

@@ -1,7 +1,6 @@
 import pygame
 from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
-from Code.Domain.Platform import Platform
 from Code.Services import MainServices
 from Code.Domain.Player import Player
 from Code.Domain.InputBox import InputBox
@@ -21,9 +20,11 @@ class GUI:
         self.width = 1200
         self.height = 700
         self.screen = pygame.display.set_mode((self.width, self.height))
+        self.background = image_manager.getBackground()
         self.setup_screen()
         self.player = None
         self.otherPlayer = None
+
 
 
     def render_map(self):
@@ -32,7 +33,7 @@ class GUI:
         Here we render a simple placeholder for the map.
         """
         if self.mainServices.eventsHandler.getState() == "Game":
-            self.screen.fill((135, 206, 235))  # Sky-blue background for the game map
+            self.screen.fill((171, 186, 124))
 
             if self.player.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameOver")
@@ -75,25 +76,29 @@ class GUI:
         """
         Setup the screen with the menu, including buttons and title.
         """
-        self.screen.fill((171, 186, 124))  # Background color for the menu
-        play_button = Button("PLAY", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 300, 250, 100, "PLAY", font_size=40)
-        settings_button = Button("SETTINGS", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 450, 250, 100, "SETTINGS",
+        self.screen.blit(self.background, (0, 0)) #background image
+
+        play_button = Button("PLAY", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 325, 250, 100, "PLAY", font_size=40)
+        settings_button = Button("SETTINGS", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 475, 250, 100, "SETTINGS",
                                  font_size=40)
-        title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 100)
+        title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 225)
         self.mainMenuObjects = [play_button, settings_button, title]
 
 
-        self.screen.fill((171, 186, 124))  # Background color for the menu
-        return_button = Button("RETURN", self.screen, (61, 83, 0), self.width / 2 - 250 / 2, 300, 250, 100, "RETURN",
+        self.screen.blit(self.background, (0, 0)) #background image
+        return_button = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 300, 250, 100, "RETURN",
                                font_size=40)
-        title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 100)
+        title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 225)
+
+        return_button = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 350, 250, 100, "RETURN",
+                               font_size=40)
         self.gameOverObjects = [return_button, title]
 
-        title = Title("TITLE", self.screen, "YOU WON", self.width / 2, 100)
+        title = Title("TITLE", self.screen, "YOU WON", self.width / 2, 225)
         self.gameWonObjects = [return_button, title]
 
-        title = Title("TITLE", self.screen, "SETTINGS", self.width / 2, 100)
-        ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 200, 450, 50)
+        title = Title("TITLE", self.screen, "SETTINGS", self.width / 2, 225)
+        ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 250, 450, 50)
 
         self.settingObjects = [ip_input_field, title, return_button]
 
@@ -214,7 +219,7 @@ class GUI:
 
             # Clear the screen based on current screen state
             if state == "MainMenu":
-                self.screen.fill((171, 186, 124))  # Menu background color
+                self.screen.blit(self.background, (0, 0))  # background image
                 for obj in self.mainMenuObjects:
                     obj.render()
             elif state == "Game":
@@ -235,25 +240,25 @@ class GUI:
     
     
     def render_main_menu(self):
-        self.screen.fill((171, 186, 124))
-        
+        self.screen.blit(self.background, (0, 0))  # background image
+
         for button in self.mainMenuObjects:
             button.render()
             
 
     def render_game_over(self):
-        self.screen.fill((171, 186, 124))
+        self.screen.blit(self.background, (0, 0))  # background image
         # sound_manager.playSound("lose")
         for object in self.gameOverObjects:
             object.render()
 
     def render_game_won(self):
-        self.screen.fill((171, 186, 124))
+        self.screen.blit(self.background, (0, 0))  # background image
         for object in self.gameWonObjects:
             object.render()
 
     def render_setting(self):
-        self.screen.fill((171, 186, 124))
+        self.screen.blit(self.background, (0, 0))  # background image
         for object in self.settingObjects:
             object.render()
 

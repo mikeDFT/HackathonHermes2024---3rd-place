@@ -2,7 +2,7 @@ from Code.Domain.Entity import Entity
 import pygame
 
 class Title(Entity):
-    def __init__(self, id, screen, text, x, y, font_size=50, text_color=(0, 0, 0), font_name=None):
+    def __init__(self, id, screen, text, x, y, font_size=150, text_color=(0, 0, 0), font_name=None):
         """
         Initializes a title text object that can be rendered on the screen.
 
@@ -23,7 +23,7 @@ class Title(Entity):
         self.text_color = text_color
         self.font_name = font_name if font_name else None
 
-        self.font = pygame.font.Font(self.font_name, self.font_size)  # Set font (default or custom)
+        self.font = pygame.font.Font('Code/Domain/RetroBlendy-LVOm3.otf', self.font_size)  # Replace with your retro font path
         self.render()
 
     def render(self):

@@ -10,13 +10,19 @@ class ImageManager:
     def getHeart(self, str):
         heart = None
         if str == "red":
-            hearth = pygame.image.load(self.soundsPath + "redHeart.png")
-            hearth = pygame.transform.scale(hearth, (50, 50))
+            heart = pygame.image.load(self.soundsPath + "redHeart.png")
+            heart = pygame.transform.scale(heart, (50, 50))
         elif str == "green":
-            hearth = pygame.image.load(self.soundsPath + "greenHeart.png")
-            hearth = pygame.transform.scale(hearth, (50, 50))
+            heart = pygame.image.load(self.soundsPath + "greenHeart.png")
+            heart = pygame.transform.scale(heart, (50, 50))
         else:
-            hearth = pygame.image.load(self.soundsPath + "redHeart.png")
-            hearth = pygame.transform.scale(hearth, (50, 50))
+            heart = pygame.image.load(self.soundsPath + "redHeart.png")
+            heart = pygame.transform.scale(heart, (50, 50))
 
-        return hearth
+        return heart
+
+    def getBackground(self):
+        background = pygame.image.load(self.soundsPath + "background.png")
+
+        return background
+
