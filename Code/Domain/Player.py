@@ -44,7 +44,7 @@ class Player:
 
     def render(self):
         """Draw the player on the screen."""
-        self.screen.blit(self.icon, (self.x, self.y))
+        self.screen.blit(self.icon, (self.rect.x, self.rect.y))
         # pygame.draw.rect(self.screen, self.color, self.rect)
 
 
