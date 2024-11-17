@@ -1,6 +1,8 @@
 import random
 
 import pygame
+
+from Code.Domain.Platform import Platform
 from Code.Services import SoundManager
 sound_manager = SoundManager.SoundMan()
 
@@ -36,6 +38,7 @@ class Player:
         self.pushStrength = 70
         self.pushedVelocity = 0
         self.jumping = 0
+        self.spawnPoints = []
 
 
     def render(self):
@@ -84,6 +87,7 @@ class Player:
             self.on_ground = 0  # Player is no longer on the ground
             networkSendFunction("LIFE:" + str(self.life))  # Send life count to other player
 
+
         # if self.velocity_y > 0:
         #     self.velocity_y = min(0, self.velocity_y - self.gravity*(timeDelta/100))
         # if self.velocity_y < 0:
@@ -126,7 +130,20 @@ class Player:
     def reset_position(self):
         """Reset the player's position after falling."""
         sound_manager.playSound("takingDamage")
-        self.x = 50  # Starting x position
-        self.y = 150  # Starting y position
+
+        self.x, self.y = random.choice(self.spawnPoints)
+
         self.rect.x = self.x
         self.rect.y = self.y
+
+    def spawnPoint(self, platforms):
+        locations = []
+
+        for platform in platforms:
+            locations.append((platform.x + platform.width / 2 - 25,  platform.y - platform.height - 1))
+
+        random_location = random.choice(locations)
+
+        self.spawnPoints = locations
+
+        return random_location

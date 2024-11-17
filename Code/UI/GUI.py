@@ -33,19 +33,6 @@ class GUI:
         if self.mainServices.eventsHandler.getState() == "Game":
             self.screen.fill((135, 206, 235))  # Sky-blue background for the game map
 
-            # Create platforms
-            platforms = [
-                Platform(self.screen, 150, 100, 250, 50),
-                Platform(self.screen, 850, 450, 200, 40),
-                Platform(self.screen, 400, 300, 190, 55),
-                Platform(self.screen, 650, 250, 310, 50),
-                Platform(self.screen, 100, 550, 170, 45),
-                Platform(self.screen, 450, 500, 160, 40),
-                Platform(self.screen, 750, 100, 280, 35),
-                Platform(self.screen, 250, 650, 210, 50),
-                Platform(self.screen, 950, 400, 230, 45)
-            ]
-
             if self.player.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameOver")
 
@@ -57,7 +44,7 @@ class GUI:
                 self.screen.blit(greenHeart, (i * 60 + 50, 25))
 
             # Render platforms
-            for platform in platforms:
+            for platform in self.platforms:
                 platform.render()
 
             currTick = pygame.time.get_ticks()
@@ -66,7 +53,7 @@ class GUI:
 
             # Handle and render the player
             self.player.update(deltaTime, self.mainServices.networking.send)  # Update the player's position
-            self.player.handle_collisions(platforms)  # Check collisions with platforms
+            self.player.handle_collisions(self.platforms)  # Check collisions with platforms
             self.player.handle_otherPlayer_collisions(self.otherPlayer)
             self.mainServices.networking.send("POS:" + str(self.player.rect.x) + "," + str(self.player.rect.y))
             self.player.render()  # Draw the player on the screen
@@ -122,10 +109,24 @@ class GUI:
             if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
                 sound_manager.playSound("buttonSelect")
                 if obj.getId() == "PLAY":
+                    # Create platforms (map)
+                    self.platforms = [
+                        Platform(self.screen, 150, 100, 250, 50),
+                        Platform(self.screen, 850, 450, 200, 40),
+                        Platform(self.screen, 400, 300, 190, 55),
+                        Platform(self.screen, 650, 250, 310, 50),
+                        Platform(self.screen, 100, 550, 170, 45),
+                        Platform(self.screen, 450, 500, 160, 40),
+                        Platform(self.screen, 750, 100, 280, 35),
+                        Platform(self.screen, 250, 650, 210, 50),
+                        Platform(self.screen, 950, 400, 230, 45)
+                    ]
+
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
                     self.player = Player(self.screen, 50, 150, color=(50, 205, 50))  # You can adjust player start position
+                    self.player.x, self.player.y = self.player.spawnPoint(self.platforms)
 
                     self.otherPlayer = Player(self.screen, 300, 150)
                     self.otherPlayer.rect.x = 100000
