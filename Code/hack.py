@@ -3,11 +3,11 @@ import socket
 
 DATA = {
     "SPEED_BUFF": "SABO:SPEED:10",
-    "JUMP_BUFF": "SABO:JUMP:-30",
+    "JUMP_BUFF": "SABO:JUMP:-20",
     "KNOCKBACK_BUFF": "SABO:KNOCK:0",
     
     "SPEED_NERF": "SABO:SPEED:3",
-    "JUMP_NERF": "SABO:JUMP:-8",
+    "JUMP_NERF": "SABO:JUMP:-9",
     "KNOCKBACK_NERF": "SABO:KNOCK:120",
 }
 
@@ -30,7 +30,7 @@ def send_to_player(target_ip, target_port, data):
 
 if __name__ == "__main__":
     # Replace these values with the target player's IP and port
-    TARGET_IP = "192.168.35.243"  # Example IP
+    TARGET_IP = "192.168.35.249"  # Example IP
     TARGET_PORT = 1234  # Example Port
     
-    send_to_player(TARGET_IP, TARGET_PORT, DATA["KNOCKBACK_BUFF"])
+    send_to_player(TARGET_IP, TARGET_PORT, DATA["KNOCKBACK_NERF"])
