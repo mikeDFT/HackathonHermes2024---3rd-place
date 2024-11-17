@@ -14,6 +14,7 @@ class Networking:
 		self.__localPort = localPort
 
 		self.otherPlayer = None
+		self.player = None
 		self.map = None
 		self.generateRndMap = None
 		self.applyMapID = None
@@ -24,7 +25,9 @@ class Networking:
 		self.__thread = threading.Thread(target=self.__listen)
 		self.__thread.start()
 		
-	
+	def passPlayer(self, player: Player):
+		self.player = player
+		
 	def passOtherPlayer(self, player: Player):
 		self.otherPlayer = player
 	
@@ -75,6 +78,16 @@ class Networking:
 					self.send("MAP:" + str(self.map["ID"]))
 				else:
 					self.send("MAP:0")
+			elif dataType == "SABO":
+				type = data.split(":")[1]
+				value = data.split(":")[2]
+				if type == "SPEED":
+					self.player.speed = int(value)
+				elif type == "JUMP":
+					self.player.jump_strength = int(value)
+				elif type == "KNOCK":
+					self.player.pushStrength = int(value)
+				
 
 # if __name__ == "__main__":
 # 	networking = Networking("192.168.35.243", 1234, "192.168.35.244", 1234)

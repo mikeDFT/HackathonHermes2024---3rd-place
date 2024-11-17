@@ -115,6 +115,9 @@ class Player:
             
     def handle_otherPlayer_collisions(self, otherPlayer):
         """Check for collisions with other player and stop falling."""
+        if self.pushedVelocity == 0:
+            return
+        
         if self.rect.colliderect(otherPlayer.rect):
             rndVelo = random.randint(self.pushStrength*90, self.pushStrength*110)/100
             sound_manager.playSound("enemyTakingDamage")
