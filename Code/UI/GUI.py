@@ -71,9 +71,6 @@ class GUI:
             redHeart = image_manager.getHeart("red")
             for i in range(self.otherPlayer.getHealth()):
                 self.screen.blit(redHeart, (i * 52 + 1000, 25))
-            # if self.otherPlayer:
-            #     self.otherPlayer.render()
-
 
             if self.otherPlayer:
                 self.otherPlayer.render()
@@ -104,8 +101,9 @@ class GUI:
 
         title = Title("TITLE", self.screen, "SETTINGS", self.width / 2, 225)
         ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 325, 450, 50)
-
-        self.settingObjects = [ip_input_field, return_button, title]
+        return_button1 = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 475, 250, 100, "RETURN",
+                               font_size=40)
+        self.settingObjects = [ip_input_field, return_button1, title]
 
         self.connectEvents()
 
@@ -122,7 +120,7 @@ class GUI:
                 if obj.getId() == "PLAY":
                     if not self.platforms:
                         self.mainServices.networking.send("REQ|MAP:")
-    
+
                         while not self.platforms:
                             time.sleep(0.05)
                     
@@ -151,6 +149,7 @@ class GUI:
                     # Switch back to the main menu when RETURN is clicked
                     self.mainServices.eventsHandler.changeState("MainMenu")
                     self.render_main_menu()  # Reset the menu screen
+
 
     def handleKeypressInputbox(self, event):
         for obj in self.settingObjects:
