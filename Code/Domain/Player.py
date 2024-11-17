@@ -7,7 +7,7 @@ from Code.Services import SoundManager
 sound_manager = SoundManager.SoundMan()
 
 class Player:
-    def __init__(self, screen, x, y, width=50, height=50, color=(255, 0, 0)):
+    def __init__(self, screen, x, y, icon, width=50, height=50, color=(255, 0, 0)):
         """
         Initialize the player.
         :param screen: The Pygame surface where the player will be rendered.
@@ -39,11 +39,13 @@ class Player:
         self.pushedVelocity = 0
         self.jumping = 0
         self.spawnPoints = []
+        self.icon = icon
 
 
     def render(self):
         """Draw the player on the screen."""
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        self.screen.blit(self.icon, (self.x, self.y))
+        # pygame.draw.rect(self.screen, self.color, self.rect)
 
 
     def apply_gravity(self):
