@@ -28,6 +28,11 @@ class ImageManager:
 
         return background
 
+    def getPlatformBackground(self):
+        platform = pygame.image.load(self.imagesPath + "platform.jpeg")
+
+        return platform
+
     def getGameBackground(self, width, height):
         version = random.choice(["1.jpeg","2.jpeg"])
         name = "game_background" + version

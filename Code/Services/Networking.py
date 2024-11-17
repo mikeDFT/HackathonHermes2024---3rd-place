@@ -12,7 +12,7 @@ class Networking:
 		self.__otherPort = otherPort
 		self.__localIP = localIP
 		self.__localPort = localPort
-		
+
 		self.otherPlayer = None
 		self.map = None
 		self.generateRndMap = None
@@ -51,11 +51,16 @@ class Networking:
 				otherPlayerX, otherPlayerY = data.split(",")
 				self.otherPlayer.rect.x = float(otherPlayerX)
 				self.otherPlayer.rect.y = float(otherPlayerY)
+
 			elif dataType == "LIFE":
+				new_life = int(data.split(":")[1])
+
 				if not self.otherPlayer:
 					continue
-					
-				self.otherPlayer.life = int(data.split(":")[1])
+
+				self.otherPlayer.pushStrength = 150
+
+
 			elif dataType == "MAP":
 				map_id = int(data.split(":")[1])  # Extract map ID as integer
 				
