@@ -200,6 +200,7 @@ class GUI:
         if self.lose_play_sound == 1:
             sound_manager.playSound("lose")
 
+    
 
     def connectEvents(self):
         # quit
@@ -252,7 +253,8 @@ class GUI:
             "Func": lambda event: self.handleKeypressInputbox(event),  # Pass the event dynamically
             "Args": []  # No static arguments needed
         })
-
+        
+        self.playSoundOnce()
         while self.running:
             self.mainServices.refresh()
 
@@ -283,6 +285,14 @@ class GUI:
 
         pygame.quit()
     
+    game_music = 0
+    def playSoundOnce(self):
+        """Play a specific sound effect or music by name."""
+        self.game_music += 1
+        if self.game_music == 1:
+            sound_manager.initMusic()
+        elif self.game_music == 23000:
+            self.game_music = 0
     
     def render_main_menu(self):
         self.screen.blit(self.background, (0, 0))  # background image

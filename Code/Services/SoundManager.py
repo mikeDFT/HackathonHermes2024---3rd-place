@@ -44,9 +44,6 @@ class SoundMan:
             except pygame.error as e:
                 print(f"Error loading sound '{name}': {e}")
 
-        # Initialize music
-        self.initMusic()
-
     def initMusic(self):
         """Play background music in a loop"""
         try:
