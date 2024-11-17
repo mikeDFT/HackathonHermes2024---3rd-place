@@ -186,6 +186,21 @@ class GUI:
         # print("MAP:" + str(map["ID"]))
         self.mainServices.networking.send("MAP:" + str(map["ID"]))
 
+
+    win_play_sound = 0
+    def playWinSound(self):
+        self.win_play_sound += 1
+        if self.win_play_sound == 1:
+            sound_manager.playSound("win")
+
+
+    lose_play_sound = 0
+    def playLoseSound(self):
+        self.lose_play_sound += 1
+        if self.lose_play_sound == 1:
+            sound_manager.playSound("lose")
+
+
     def connectEvents(self):
         # quit
         self.mainServices.eventsHandler.connectEvent({
@@ -249,12 +264,16 @@ class GUI:
                 for obj in self.mainMenuObjects:
                     obj.render()
             elif state == "Game":
+                self.win_play_sound = 0
+                self.lose_play_sound = 0
                 self.render_map()  # Render the game map when in the game screen
 
             elif state == "GameOver":
+                self.playLoseSound()
                 self.render_game_over()  # Render the game over screen
 
             elif state == "GameWon":
+                self.playWinSound()
                 self.render_game_won()
 
             elif state == "Settings":
