@@ -65,7 +65,8 @@ class MapManager:
         ]
 
     def getRandomMap(self):
-        return random.choice(self.maps)
+        rnd = random.randint(1, len(self.maps)-1)
+        return self.maps[rnd]
 
     def getMapById(self, id):
         return self.maps[id]

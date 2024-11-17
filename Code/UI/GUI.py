@@ -147,6 +147,7 @@ class GUI:
                     self.mainServices.eventsHandler.changeState("Settings")
                     self.render_setting()
                 elif obj.getId() == "RETURN":
+                    self.eraseMap()
                     # Switch back to the main menu when RETURN is clicked
                     self.mainServices.eventsHandler.changeState("MainMenu")
                     self.render_main_menu()  # Reset the menu screen
@@ -162,6 +163,9 @@ class GUI:
         self.game_background = image_manager.getGameBackground(self.width, self.height)
         self.platforms = map["MAP"]
 
+    def eraseMap(self):
+        self.platforms = None
+        self.mainServices.networking.map = None
 
     def generateRndMap(self):
         # Create platforms (map)

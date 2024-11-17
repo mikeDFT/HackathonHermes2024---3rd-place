@@ -42,7 +42,6 @@ class Networking:
 			data, addr = self.receive()
 			# print(f"Received: {data} from {addr}")
 			
-			
 			dataType = data.split(":")[0]
 			if dataType == "POS":
 				if not self.otherPlayer:
@@ -58,17 +57,15 @@ class Networking:
 					
 				self.otherPlayer.life = int(data.split(":")[1])
 			elif dataType == "MAP":
-				print(data)
 				map_id = int(data.split(":")[1])  # Extract map ID as integer
 				
 				if map_id == 0: # other player has no map
 					self.generateRndMap()
-					return
+					continue
 				
 				# Retrieve the map from MapManager
 				self.applyMapID(map_id)
 			elif dataType == "REQ|MAP":
-				print(data)
 				if self.map:
 					self.send("MAP:" + str(self.map["ID"]))
 				else:
