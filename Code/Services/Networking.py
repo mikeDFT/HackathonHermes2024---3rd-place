@@ -16,6 +16,7 @@ class Networking:
 		self.otherPlayer = None
 		self.map = None
 		self.generateRndMap = None
+		self.applyMapID = None
 		
 		self.__socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		self.__socket.bind((localIP, localPort))
@@ -60,8 +61,7 @@ class Networking:
 					return
 				
 				# Retrieve the map from MapManager
-				map_manager = MapManager(self.otherPlayer.screen)  # Assuming screen is accessible
-				self.otherPlayer.platforms = map_manager.getMapById(map_id)["MAP"]
+				self.applyMapID(map_id)
 			elif dataType == "REQ|MAP":
 				if self.map:
 					self.send("MAP:" + str(self.map["ID"]))
