@@ -90,6 +90,9 @@ class GUI:
                                  font_size=40)
         title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 225)
         self.mainMenuObjects = [play_button, settings_button, title]
+        
+        self.waitingForPlayerLabel = Title("WAITING", self.screen, "Waiting for other player...", self.width / 2, 300, font_size=25)
+        
 
 
         self.screen.blit(self.background, (0, 0)) #background image
@@ -122,10 +125,12 @@ class GUI:
                 if obj.getId() == "PLAY":
                     if not self.platforms:
                         self.mainServices.networking.send("REQ|MAP:")
-    
+                        self.waitingForPlayerLabel.render()
+                        pygame.display.flip()
+                        
                         while not self.platforms:
                             time.sleep(0.05)
-                    
+                
                         
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
@@ -272,6 +277,7 @@ class GUI:
 
         for button in self.mainMenuObjects:
             button.render()
+            
             
 
     def render_game_over(self):
