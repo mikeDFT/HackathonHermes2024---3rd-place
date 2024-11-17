@@ -85,7 +85,7 @@ class GUI:
         play_button = Button("PLAY", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 325, 250, 100, "PLAY", font_size=40)
         settings_button = Button("SETTINGS", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 475, 250, 100, "SETTINGS",
                                  font_size=40)
-        title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 225)
+        title = Title("TITLE", self.screen, "BitBeat", self.width / 2, 225, font_size=130, text_color=(222, 254, 222))
         self.mainMenuObjects = [play_button, settings_button, title]
         
         self.waitingForPlayerLabel = Title("WAITING", self.screen, "Waiting for other player...", self.width / 2, 300,
