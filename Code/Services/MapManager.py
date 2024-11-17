@@ -5,6 +5,7 @@ class MapManager:
     def __init__(self, screen):
         self.screen = screen
         self.maps = [
+            {},
             {
                 "MAP": [
                 Platform(self.screen, 150, 100, 250, 50),

@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from Code.Domain.Buttons import Button
 from Code.Domain.Title import Title
@@ -16,12 +18,15 @@ class GUI:
         pygame.init()
         self.lastTick = 0
         self.mainServices = MainServices.MainServices()
+        self.mainServices.networking.generateRndMap = self.generateRndMap
+        self.mainServices.networking.applyMapID = self.applyMapID
         self.running = True
         self.width = 1200
         self.height = 700
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.background = image_manager.getBackground()
         self.game_background = None
+        self.platforms = None
         self.setup_screen()
         self.player = None
         self.otherPlayer = None
@@ -114,15 +119,13 @@ class GUI:
             if isinstance(obj, Button) and obj.is_pressed(mouse_pos):
                 sound_manager.playSound("buttonSelect")
                 if obj.getId() == "PLAY":
-                    # Create platforms (map)
-                    map = MapManager(self.screen).getRandomMap()
-                    self.game_background = image_manager.getGameBackground(self.width, self.height)
-                    self.platforms = map["MAP"]
-
-                    # Send map to the other user
-                    # print("MAP:" + str(map["ID"]))
-                    self.mainServices.networking.send("MAP:" + str(map["ID"]))
-
+                    if not self.platforms:
+                        self.mainServices.networking.send("REQ|MAP:")
+    
+                        while not self.platforms:
+                            time.sleep(0.05)
+                    
+                        
                     # Switch to the game screen when PLAY is clicked
                     self.mainServices.eventsHandler.changeState("Game")
                     # Initialize the player when entering the game
@@ -149,6 +152,24 @@ class GUI:
         for obj in self.settingObjects:
             if isinstance(obj, InputBox):
                 obj.handle_event(event)
+
+    def applyMapID(self, map_id):
+        map = MapManager(self.screen).getMapById(map_id)
+        self.mainServices.networking.map = map
+        self.game_background = image_manager.getGameBackground(self.width, self.height)
+        self.platforms = map["MAP"]
+
+
+    def generateRndMap(self):
+        # Create platforms (map)
+        map = MapManager(self.screen).getRandomMap()
+        self.mainServices.networking.map = map
+        self.game_background = image_manager.getGameBackground(self.width, self.height)
+        self.platforms = map["MAP"]
+        
+        # Send map to the other user
+        # print("MAP:" + str(map["ID"]))
+        self.mainServices.networking.send("MAP:" + str(map["ID"]))
 
     def keypress_wrapper(self):
         """
