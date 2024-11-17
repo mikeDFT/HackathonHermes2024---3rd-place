@@ -7,7 +7,7 @@ from Code.Domain.Entity import Entity
 
 
 class Button(Entity):
-    def __init__(self, id, screen, color, x, y, length, width, text=None, text_color=(0, 0, 0), font_size=20,
+    def __init__(self, id, screen, color, x, y, length, width, text=None, text_color=(222, 254, 222), font_size=20,
                  shadow_opacity=128):
         """
         Initialize a button with text centered on it and a semi-transparent shadow.

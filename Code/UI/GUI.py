@@ -85,7 +85,7 @@ class GUI:
         play_button = Button("PLAY", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 325, 250, 100, "PLAY", font_size=40)
         settings_button = Button("SETTINGS", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 475, 250, 100, "SETTINGS",
                                  font_size=40)
-        title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 225)
+        title = Title("TITLE", self.screen, "BitBeat", self.width / 2, 225, font_size=130, text_color=(222, 254, 222))
         self.mainMenuObjects = [play_button, settings_button, title]
         
         self.waitingForPlayerLabel = Title("WAITING", self.screen, "Waiting for other player...", self.width / 2, 300,
@@ -109,10 +109,8 @@ class GUI:
 
         self.connectEvents()
 
-
     def quit(self):
         self.running = False
-
 
     def handleButtonClickMenus(self, objects):
         mouse_pos = pygame.mouse.get_pos()
@@ -159,7 +157,6 @@ class GUI:
                     self.mainServices.eventsHandler.changeState("MainMenu")
                     self.render_main_menu()  # Reset the menu screen
 
-
     def handleKeypressInputbox(self, event):
         for obj in self.settingObjects:
             if isinstance(obj, InputBox):
@@ -186,20 +183,17 @@ class GUI:
         # print("MAP:" + str(map["ID"]))
         self.mainServices.networking.send("MAP:" + str(map["ID"]))
 
-
     win_play_sound = 0
     def playWinSound(self):
         self.win_play_sound += 1
         if self.win_play_sound == 1:
             sound_manager.playSound("win")
 
-
     lose_play_sound = 0
     def playLoseSound(self):
         self.lose_play_sound += 1
         if self.lose_play_sound == 1:
             sound_manager.playSound("lose")
-
 
     def connectEvents(self):
         # quit
@@ -282,14 +276,12 @@ class GUI:
             pygame.display.flip()
 
         pygame.quit()
-    
-    
+
     def render_main_menu(self):
         self.screen.blit(self.background, (0, 0))  # background image
 
         for button in self.mainMenuObjects:
             button.render()
-            
 
     def render_game_over(self):
         self.screen.blit(self.background, (0, 0))  # background image
