@@ -1,5 +1,5 @@
-from repository.data_extractor import DataExtractor
-from domain.player_profile import PlayerProfile
+from Code.Repository.data_extractor import DataExtractor
+from Code.Domain.player_profile import PlayerProfile
 
 class UserRetriever:
     def __init__(self):

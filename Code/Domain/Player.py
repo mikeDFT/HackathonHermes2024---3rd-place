@@ -107,7 +107,8 @@ class Player:
         for platform in platforms:
             if self.rect.colliderect(platform.rect):  # If player collides with platform
                 # Simple collision resolution (stop the player from falling through)
-                if pygame.time.get_ticks() - self.jumping > 400 and self.rect.y + self.rect.height < platform.rect.y + 40:
+                ms = self.jump_strength == -15 and 400 or 100
+                if pygame.time.get_ticks() - self.jumping > ms and self.rect.y + self.rect.height < platform.rect.y + 40:
                     self.rect.bottom = platform.rect.top  # Place player on top of platform
                     self.on_ground = pygame.time.get_ticks()  # Player is on the ground
                     self.velocity_y = 0
@@ -115,7 +116,7 @@ class Player:
             
     def handle_otherPlayer_collisions(self, otherPlayer):
         """Check for collisions with other player and stop falling."""
-        if self.pushedVelocity == 0:
+        if self.pushStrength == 0:
             return
         
         if self.rect.colliderect(otherPlayer.rect):
