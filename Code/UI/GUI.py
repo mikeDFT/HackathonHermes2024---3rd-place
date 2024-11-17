@@ -87,8 +87,10 @@ class GUI:
                                  font_size=40)
         title = Title("TITLE", self.screen, "THE GAME", self.width / 2, 225)
         self.mainMenuObjects = [play_button, settings_button, title]
-
-
+        
+        self.waitingForPlayerLabel = Title("WAITING", self.screen, "Waiting for other player...", self.width / 2, 300,
+                                           font_size=25)
+        
         self.screen.blit(self.background, (0, 0)) #background image
         title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 225)
 
@@ -101,8 +103,8 @@ class GUI:
 
         title = Title("TITLE", self.screen, "SETTINGS", self.width / 2, 225)
         ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 325, 450, 50)
-        return_button1 = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 475, 250, 100, "RETURN",
-                               font_size=40)
+        return_button1 = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 150 / 2, 570, 150, 70, "RETURN",
+                               font_size=30)
         self.settingObjects = [ip_input_field, return_button1, title]
 
         self.connectEvents()
@@ -120,7 +122,9 @@ class GUI:
                 if obj.getId() == "PLAY":
                     if not self.platforms:
                         self.mainServices.networking.send("REQ|MAP:")
-
+                        self.waitingForPlayerLabel.render()
+                        pygame.display.flip()
+                        
                         while not self.platforms:
                             time.sleep(0.05)
                     
@@ -142,10 +146,15 @@ class GUI:
                     self.mainServices.networking.send("LIFE:" + str(self.player.life))
                 elif obj.getId() == "SETTINGS":
                     # Add settings functionality if needed
-                    self.mainServices.eventsHandler.changeState("Settings")
                     self.render_setting()
+                    self.mainServices.eventsHandler.changeState("Settings")
+                    print(self.mainServices.eventsHandler.getState())
                 elif obj.getId() == "RETURN":
                     self.eraseMap()
+                    # Switch back to the main menu when RETURN is clicked
+                    self.mainServices.eventsHandler.changeState("MainMenu")
+                    self.render_main_menu()  # Reset the menu screen
+                elif obj.getId() == "RETURN_SETTINGS":
                     # Switch back to the main menu when RETURN is clicked
                     self.mainServices.eventsHandler.changeState("MainMenu")
                     self.render_main_menu()  # Reset the menu screen
@@ -176,16 +185,6 @@ class GUI:
         # Send map to the other user
         # print("MAP:" + str(map["ID"]))
         self.mainServices.networking.send("MAP:" + str(map["ID"]))
-
-    def keypress_wrapper(self):
-        """
-        Wrapper to handle keypress events by injecting the current event.
-        """
-
-        def wrapper(event):
-            self.handleKeypressInputbox(event)
-
-        return wrapper
 
     def connectEvents(self):
         # quit
