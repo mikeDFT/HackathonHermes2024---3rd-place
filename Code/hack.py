@@ -30,7 +30,7 @@ def send_to_player(target_ip, target_port, data):
 
 if __name__ == "__main__":
     # Replace these values with the target player's IP and port
-    TARGET_IP = "192.168.35.249"  # Example IP
+    TARGET_IP = "192.168.35.243"  # Example IP
     TARGET_PORT = 1234  # Example Port
     
-    send_to_player(TARGET_IP, TARGET_PORT, DATA["SPEED_NERF"])
+    send_to_player(TARGET_IP, TARGET_PORT, DATA["KNOCKBACK_BUFF"])
