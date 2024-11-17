@@ -21,6 +21,7 @@ class GUI:
         self.height = 700
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.background = image_manager.getBackground()
+        self.game_background = None
         self.setup_screen()
         self.player = None
         self.otherPlayer = None
@@ -33,7 +34,7 @@ class GUI:
         Here we render a simple placeholder for the map.
         """
         if self.mainServices.eventsHandler.getState() == "Game":
-            self.screen.fill((171, 186, 124))
+            self.screen.blit(self.game_background, (0, 0))  # background image
 
             if self.player.getHealth() == 0:
                 self.mainServices.eventsHandler.changeState("GameOver")
@@ -86,11 +87,9 @@ class GUI:
 
 
         self.screen.blit(self.background, (0, 0)) #background image
-        return_button = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 300, 250, 100, "RETURN",
-                               font_size=40)
         title = Title("TITLE", self.screen, "GAME OVER", self.width / 2, 225)
 
-        return_button = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 350, 250, 100, "RETURN",
+        return_button = Button("RETURN", self.screen, (76, 31, 122), self.width / 2 - 250 / 2, 325, 250, 100, "RETURN",
                                font_size=40)
         self.gameOverObjects = [return_button, title]
 
@@ -98,9 +97,9 @@ class GUI:
         self.gameWonObjects = [return_button, title]
 
         title = Title("TITLE", self.screen, "SETTINGS", self.width / 2, 225)
-        ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 250, 450, 50)
+        ip_input_field = InputBox(self.screen, self.width / 2 - 450/2, 325, 450, 50)
 
-        self.settingObjects = [ip_input_field, title, return_button]
+        self.settingObjects = [ip_input_field, return_button, title]
 
         self.connectEvents()
 
@@ -117,6 +116,7 @@ class GUI:
                 if obj.getId() == "PLAY":
                     # Create platforms (map)
                     map = MapManager(self.screen).getRandomMap()
+                    self.game_background = image_manager.getGameBackground(self.width, self.height)
                     self.platforms = map["MAP"]
 
                     # Send map to the other user

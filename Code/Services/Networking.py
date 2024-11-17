@@ -57,10 +57,6 @@ class Networking:
 				self.otherPlayer.rect.y = float(otherPlayerY)
 			elif dataType == "LIFE":
 				self.otherPlayer.life = int(data.split(":")[1])
-			
-	
-	
-	
 
 # if __name__ == "__main__":
 # 	networking = Networking("192.168.35.243", 1234, "192.168.35.244", 1234)

@@ -1,4 +1,6 @@
 import os
+import random
+
 import pygame
 
 class ImageManager:
@@ -26,3 +28,10 @@ class ImageManager:
 
         return background
 
+    def getGameBackground(self, width, height):
+        version = random.choice(["1.jpeg","2.jpeg"])
+        name = "game_background" + version
+        background = pygame.image.load(self.soundsPath + name)
+        background = pygame.transform.scale(background, (width, height))
+
+        return background
