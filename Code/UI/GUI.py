@@ -65,7 +65,8 @@ class GUI:
             self.player.handle_otherPlayer_collisions(self.otherPlayer)
             self.mainServices.networking.send("POS:" + str(self.player.rect.x) + "," + str(self.player.rect.y))
             self.player.render()  # Draw the player on the screen
-            self.otherPlayer.render()
+            if self.otherPlayer.getHealth() > 0:
+                self.otherPlayer.render()
 
             redHeart = image_manager.getHeart("red")
             for i in range(self.otherPlayer.getHealth()):

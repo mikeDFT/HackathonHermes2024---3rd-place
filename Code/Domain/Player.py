@@ -116,6 +116,7 @@ class Player:
         if self.rect.colliderect(otherPlayer.rect):
             rndVelo = random.randint(self.pushStrength*90, self.pushStrength*110)/100
             sound_manager.playSound("enemyTakingDamage")
+            self.jumping = pygame.time.get_ticks()
             if self.rect.x < otherPlayer.rect.x:
                 self.pushedVelocity = -rndVelo
             else:
